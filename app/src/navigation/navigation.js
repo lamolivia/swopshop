@@ -62,24 +62,15 @@ const TabNavigator = () => {
           ),
         }}
       />
-      {/* <Tab.Screen
-        name="Camera"
-        component={CameraScreen}
+      <Tab.Screen
+        name="Main"
+        component={Main}
         options={{
           tabBarIcon: ({ color }) => (
-            <MaterialCommunityIcons name="camera" color={color} size={26} />
+            <MaterialCommunityIcons name="home" color={color} size={26} />
           ),
         }}
       />
-      <Tab.Screen
-        name="Profile"
-        component={ProfileScreen}
-        options={{
-          tabBarIcon: ({ color }) => (
-            <MaterialCommunityIcons name="account" color={color} size={26} />
-          ),
-        }}
-      /> */}
     </Tab.Navigator>
   );
 };
