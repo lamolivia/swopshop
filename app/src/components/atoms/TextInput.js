@@ -10,6 +10,9 @@ const SwopTextInput = ({value, onChange, placeholder, hidden}) => {
       		placeholder={placeholder}
 			placeholderTextColor={"#A0A0A0"}
 			secureTextEntry={hidden}
+            autoCorrect={false}
+            enablesReturnKeyAutomatically={true}
+            returnKeyType="next"
       	/>
 	);
 }

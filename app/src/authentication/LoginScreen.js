@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
   TouchableWithoutFeedback,
   View,
+  Image
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useFormik } from "formik";
@@ -17,6 +18,9 @@ import { auth } from "../utils/firebase";
 import { signInWithEmailAndPassword } from "@firebase/auth";
 import colors from "../styles/colors";
 import headers from "../styles/headers";
+
+import SwopTextInput from '../components/atoms/TextInput';
+import SwopButton from '../components/atoms/SwopButton';
 
 const LoginSchema = Yup.object().shape({
   email: Yup.string().email("Invalid email").required("Required"),
@@ -31,19 +35,6 @@ const errorCodes = {
 
 const LoginScreen = ({ navigation }) => {
   const [firebaseError, setFirebaseError] = useState({});
-  const refPassword = useRef(null);
-
-  const formik = useFormik({
-    initialValues: {
-      email: "",
-      password: "",
-    },
-    validationSchema: LoginSchema,
-    onSubmit: (values, { resetForm }) => {
-      signIn(values);
-      resetForm();
-    },
-  });
 
   const signIn = ({ email, password }) => {
     signInWithEmailAndPassword(auth, email, password)
@@ -56,10 +47,15 @@ const LoginScreen = ({ navigation }) => {
       .catch((err) => setFirebaseError(err));
   };
 
+	const [username, setUsername] = useState("");
+	const [password, setPassword] = useState("");
+	const handlePress = () => {
+    signIn(username, password);
+	};
+
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-      <SafeAreaView style={styles.container}>
-        <View style={styles.bottomCont}>
+        {/*<View style={styles.bottomCont}>
           <Text style={[headers.h1, styles.h1]}>Welcome Back</Text>
           <KeyboardAvoidingView style={styles.textInputCont}>
             <Ionicons name="ios-mail" size={24} style={styles.textInputIcon} />
@@ -137,7 +133,29 @@ const LoginScreen = ({ navigation }) => {
             </TouchableOpacity>
           </View>
         </View>
-      </SafeAreaView>
+            */}
+		<SafeAreaView style={styles.container}>
+			<Image style={styles.logo} source={require('../../assets/swoplogo-removebg.png')}></Image>
+			<View style={{height: 120}}/>
+			<SwopTextInput value={username} onChange={(e)=>{setUsername(e)}} placeholder="Email"/>
+			<SwopTextInput value={password} onChange={(e)=>{setPassword(e)}} placeholder="Password" hidden/>
+			<View style={{height: 50}}/>
+			<SwopButton title={"Login"} onPress={handlePress}/>
+			<View style={{height: 15}}/>
+			<View style={{flex: 1, flexDirection: "row"}}>
+				<Text style={styles.signuptext}>
+					Don't have an account? {" "}
+				</Text>
+				<TouchableOpacity onPress={()=>{navigation.navigate("Signup")}}>
+					<Text style={styles.signup}>Sign up</Text>
+				</TouchableOpacity>
+			</View>
+      <Text style={[headers.p, styles.error]}>
+        {Object.keys(errorCodes).includes(firebaseError.code)
+          ? errorCodes[firebaseError.code]
+          : firebaseError.message}
+      </Text>
+		</SafeAreaView>
     </TouchableWithoutFeedback>
   );
 };
@@ -145,72 +163,93 @@ const LoginScreen = ({ navigation }) => {
 export default LoginScreen;
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "flex-end",
-    backgroundColor: colors.lightGray,
-  },
-  image: { width: "100%" },
-  bottomCont: {
-    minHeight: 450,
-    height: "60%",
-    paddingHorizontal: 10,
-    borderTopLeftRadius: 15,
-    borderTopRightRadius: 15,
-    backgroundColor: "white",
-  },
-  h1: { marginTop: 20, marginBottom: 10 },
-  textInputCont: {
-    flexDirection: "row",
-    alignItems: "center",
-    borderRadius: 5,
-    backgroundColor: colors.lightGray,
-    marginVertical: 10,
-  },
-  textInputIcon: {
-    paddingHorizontal: 10,
-    color: colors.darkGray,
-  },
-  input: {
-    flex: 1,
-    paddingRight: 10,
-    paddingVertical: 10,
-  },
-  submit: {
-    marginTop: "auto",
-    marginBottom: 10,
-    paddingVertical: 10,
-    borderRadius: 5,
-    backgroundColor: colors.primary,
-  },
-  submitTxt: {
-    textAlign: "center",
-    color: "white",
-  },
-  split: {
-    marginVertical: 10,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-  },
-  bar: { flex: 1, borderBottomWidth: 1.5, borderBottomColor: colors.lightGray },
-  barText: { marginHorizontal: 5, color: colors.lightGray, fontSize: 15 },
-  loginContainer: {
-    marginTop: 10,
-    marginBottom: 20,
-    flexDirection: "row",
-    justifyContent: "center",
-  },
-  loginTxt1: {
-    fontSize: 15,
-  },
-  loginTxt2: {
-    color: colors.primary,
-    fontSize: 15,
-  },
+//  container: {
+//    flex: 1,
+//    justifyContent: "flex-end",
+//    backgroundColor: "#FFFFFF",
+//  },
+//  image: { width: "100%" },
+//  bottomCont: {
+//    minHeight: 450,
+//    height: "60%",
+//    paddingHorizontal: 10,
+//    borderTopLeftRadius: 15,
+//    borderTopRightRadius: 15,
+//    backgroundColor: "white",
+//  },
+//  h1: { marginTop: 20, marginBottom: 10 },
+//  textInputCont: {
+//    flexDirection: "row",
+//    alignItems: "center",
+//    borderRadius: 5,
+//    backgroundColor: colors.lightGray,
+//    marginVertical: 10,
+//  },
+//  textInputIcon: {
+//    paddingHorizontal: 10,
+//    color: colors.darkGray,
+//  },
+//  input: {
+//    flex: 1,
+//    paddingRight: 10,
+//    paddingVertical: 10,
+//  },
+//  submit: {
+//    marginTop: "auto",
+//    marginBottom: 10,
+//    paddingVertical: 10,
+//    borderRadius: 5,
+//    backgroundColor: colors.primary,
+//  },
+//  submitTxt: {
+//    textAlign: "center",
+//    color: "white",
+//  },
+//  split: {
+//    marginVertical: 10,
+//    flexDirection: "row",
+//    alignItems: "center",
+//    justifyContent: "space-between",
+//  },
+//  bar: { flex: 1, borderBottomWidth: 1.5, borderBottomColor: colors.lightGray },
+//  barText: { marginHorizontal: 5, color: colors.lightGray, fontSize: 15 },
+//  loginContainer: {
+//    marginTop: 10,
+//    marginBottom: 20,
+//    flexDirection: "row",
+//    justifyContent: "center",
+//  },
+//  loginTxt1: {
+//    fontSize: 15,
+//  },
+//  loginTxt2: {
+//    color: colors.primary,
+//    fontSize: 15,
+//  },
   error: {
     color: "red",
     marginLeft: 10,
     fontSize: 15,
   },
+	container: {
+		flex: 1,
+		backgroundColor: '#fff',
+		alignItems: 'center',
+		justifyContent: 'flex-start',
+		paddingTop: 80,
+	},
+	logo: {
+		width: 330,
+		height: 160,
+		marginTop: 40
+	},
+	signup:{
+		fontSize: 18,
+		color: "#155A81",
+		fontWeight: "600",
+	},
+	signuptext:{
+		fontSize: 18,
+		fontWeight: "600",
+	}
 });
