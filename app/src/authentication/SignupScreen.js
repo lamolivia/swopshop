@@ -1,5 +1,6 @@
 import React, { useRef, useState } from "react";
 import {
+  Image,
   Keyboard,
   SafeAreaView,
   StyleSheet,
@@ -79,7 +80,7 @@ const SignupScreen = ({ navigation }) => {
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
       <SafeAreaView style={styles.container}>
-        <Text style={[headers.h1, styles.h1]}>Create Account</Text>
+        {/* <Image source={"../../assets/swoplogo.PNG"} style={styles.logo} /> */}
         <View style={styles.textInputCont}>
           <Ionicons name="person" size={24} style={styles.textInputIcon} />
           <TextInput
@@ -182,7 +183,7 @@ const SignupScreen = ({ navigation }) => {
           }
           onPress={formik.handleSubmit}
         >
-          <Text style={[headers.p, styles.submitTxt]}>Join Clearo</Text>
+          <Text style={[headers.p, styles.submitTxt]}>Sign up</Text>
         </TouchableOpacity>
         <Text style={[headers.p, styles.error]}>
           {Object.keys(errorCodes).includes(firebaseError.code)
@@ -211,7 +212,7 @@ export default SignupScreen;
 
 const styles = StyleSheet.create({
   container: { flex: 1, marginHorizontal: 10 },
-  h1: { marginTop: 20, marginBottom: 10 },
+  logo: { height: 100 },
   textInputCont: {
     flexDirection: "row",
     alignItems: "center",

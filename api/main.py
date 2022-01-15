@@ -1,17 +1,27 @@
 import uvicorn
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+import firebase_admin
+from firebase_admin import credentials, firestore
 import os
 
 app = FastAPI()
 
-#origins = [
+# Firebase initialization
+# Use the application default credentials
+project_id = 'swopshop-7135f'
+cred = credentials.Certificate('./firebasePrivateKey.json')
+firebase_admin.initialize_app(cred)
+
+db = firestore.client()
+
+# origins = [
 #    "http://localhost",
 #    "http://localhost:8000",
 #    "http://localhost:8080",
 #    "http://localhost:8081",
 #	"http://localhost:19001"
-#]
+# ]
 
 app.add_middleware(
     CORSMiddleware,
@@ -21,6 +31,20 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+
 @app.get("/test")
 async def Test():
-	return "testing value"
+    return "testing value"
+
+
+@app.get("/get-user")
+async def get_user(user_id: str):
+    user_doc_ref = db.collection('users').document(user_id)
+    user_doc = user_doc_ref.get()
+    if user_doc.exists:
+        user_doc = user_doc.to_dict()
+        print(user_doc)
+        return user_doc
+    else:
+        print("No such document!")
+        return "Error"
