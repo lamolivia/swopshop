@@ -11,6 +11,8 @@ import colors from "../styles/colors";
 import TestProfileScreen from "../pages/TestProfileScreen";
 import TestSwipeScreen from "../pages/TestSwipeScreen";
 import TestChatScreen from "../pages/TestChatScreen";
+import ProfileScreen from "../pages/ProfileScreen";
+import SettingScreen from "../pages/SettingsScreen";
 
 const Stack = createStackNavigator();
 const Tab = createMaterialBottomTabNavigator();
@@ -35,6 +37,11 @@ const Navigation = () => {
           options={{ animationEnabled: false }}
         />
         <Stack.Screen name="Home" component={TabNavigator} />
+      <Stack.Screen
+          name="SettingScreen"
+          component={SettingScreen}
+          options={{ animationEnabled: true }}
+      />
       </Stack.Navigator>
     </NavigationContainer>
   );
