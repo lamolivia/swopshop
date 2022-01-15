@@ -4,6 +4,8 @@ import { createMaterialBottomTabNavigator } from "@react-navigation/material-bot
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import SignupScreen from "../authentication/SignupScreen";
+import LoginScreen from "../authentication/LoginScreen";
+import colors from "../styles/colors";
 
 const Stack = createStackNavigator();
 const Tab = createMaterialBottomTabNavigator();
@@ -12,9 +14,21 @@ const Navigation = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        headerMode="none"
-        screenOptions={{ cardStyle: { backgroundColor: "#000000" } }}
+        screenOptions={{
+          cardStyle: { backgroundColor: "#ffffff" },
+          headerShown: false,
+        }}
       >
+        <Stack.Screen
+          name="Signup"
+          component={SignupScreen}
+          options={{ animationEnabled: false }}
+        />
+        <Stack.Screen
+          name="Login"
+          component={LoginScreen}
+          options={{ animationEnabled: false }}
+        />
         <Stack.Screen name="Home" component={TabNavigator} />
       </Stack.Navigator>
     </NavigationContainer>
@@ -26,8 +40,8 @@ const TabNavigator = () => {
     <Tab.Navigator
       initialRouteName="Home"
       labeled={false}
-      //   activeColor={colors.navbarActive}
-      //   inactiveColor={colors.navbarInactive}
+      activeColor={colors.primary}
+      inactiveColor={colors.darkGray}
       barStyle={{
         position: "absolute",
         left: "50%",
@@ -36,7 +50,7 @@ const TabNavigator = () => {
         bottom: 10,
         overflow: "hidden",
         borderRadius: "50%",
-        // backgroundColor: colors.navbar,
+        backgroundColor: colors.lightGray,
       }}
     >
       <Tab.Screen
