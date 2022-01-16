@@ -79,3 +79,9 @@ async def test_dfs(product_id: str):
 
     g = Graph(db)
     return g.contains_cycle(product_id=product_id)
+
+@app.get("/products")
+async def products(user_id: str):
+    return ["https://images.macrumors.com/t/ChPbcdmq7U5j6laUuR61rOjbh6g=/1600x0/article-new/2020/11/macbook-air-m1-unboxing.jpg",
+    "https://cdn.pocket-lint.com/r/s/970x/assets/images/148821-laptops-review-apple-macbook-air-2019-review-image1-rjq8dgayx5-jpg.webp",
+    "https://thermaltake.azureedge.net/pub/media/catalog/product/cache/6bf0ed99c663954fafc930039201ed07/x/f/xfit_black-white01.jpg"]
