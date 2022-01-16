@@ -74,6 +74,8 @@ class Graph:
 		return user.get('want', [])
 
 	def destory_cycle(self, path):
+		if len(path) <= 1:
+			return
 		path = path.copy()
 		path.append(path[0])
 		self.destroy_path(path)
