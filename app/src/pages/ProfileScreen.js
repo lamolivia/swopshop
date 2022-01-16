@@ -45,7 +45,7 @@ const ProfileScreen = ({ navigation }) => {
         <View style={styles.header_icons}>
           <TouchableOpacity
             style={styles.settings_icon}
-            onPress={() => navigation.navigate("Camera", {get_all_products})}
+            onPress={() => navigation.navigate("AddProductScreen", {get_all_products})}
           >
             <Ionicons name="add-circle-sharp" size={30} color="black" />
           </TouchableOpacity>

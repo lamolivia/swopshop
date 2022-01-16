@@ -1,14 +1,11 @@
 import React from "react";
-import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { FontAwesome5 } from "@expo/vector-icons";
-
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import SignupScreen from "../authentication/SignupScreen";
 import LoginScreen from "../authentication/LoginScreen";
 import colors from "../styles/colors";
-import TestChatScreen from "../pages/TestChatScreen";
 import ProfileScreen from "../pages/ProfileScreen";
 import SettingScreen from "../pages/SettingsScreen";
 import SwipeScreen from "../pages/SwipeScreen";
@@ -16,6 +13,7 @@ import CameraScreen from "../pages/CameraScreen";
 import ImageDisplayScreen from "../pages/ImageDisplayScreen";
 import SplashScreen from "../pages/SplashScreen";
 import ChatRoomsScreen from "../pages/ChatRoomsScreen";
+import AddProductScreen from "../pages/AddProductScreen";
 
 const Stack = createStackNavigator();
 const Tab = createMaterialBottomTabNavigator();
@@ -58,6 +56,11 @@ const Navigation = () => {
         <Stack.Screen
           name="ImageDisplay"
           component={ImageDisplayScreen}
+          options={{ animationEnabled: true }}
+        />
+        <Stack.Screen
+          name="AddProductScreen"
+          component={AddProductScreen}
           options={{ animationEnabled: true }}
         />
       </Stack.Navigator>
