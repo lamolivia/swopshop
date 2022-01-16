@@ -2,18 +2,26 @@ import React from "react";
 import { SafeAreaView, View, StyleSheet, Text, Image } from "react-native";
 
 const ImageDisplayScreen = ({ route }) => {
-  const { user, image } = route.params;
+  const { user, image, title, price } = route.params;
   return (
-    <SafeAreaView>
+    <SafeAreaView style={styles.container}>
+      <Text style={{fontSize: 30, marginBottom: 20, marginTop: 20}}>{title} - ${price}</Text>
       <Image style={styles.image} source={image} />
     </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
+  container:{
+
+    flex: 1,
+    justifyContent: "flex-start",
+    alignItems:"center"
+
+  },
   image: {
-    height: 100,
-    width: 100,
+    height: "85%",
+    width: "90%",
   },
 });
 

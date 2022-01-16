@@ -85,7 +85,7 @@ const displayImages = (navigation) => {
     <TouchableOpacity
       key={id}
       onPress={() => {
-        navigation.navigate("ImageDisplay", { user: user.name, image: image });
+        navigation.navigate("ImageDisplay", { user: user.name, image: image, title: "hello", price: "100"});
       }}
     >
       <View style={styles.image_view}>
