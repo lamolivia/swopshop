@@ -33,7 +33,7 @@ const ProfileScreen = ({ navigation }) => {
   const stars = [];
   for (let i = 0; i < 5; i++) {
     let colour = i < user.rating ? "black" : "grey";
-    stars.push(<Ionicons name="star" size={14} color={colour} />);
+    stars.push(<Ionicons key={i} name="star" size={14} color={colour} />);
   }
 
   return (
@@ -75,6 +75,7 @@ const ProfileScreen = ({ navigation }) => {
       <ScrollView>
         <View style={styles.view2}>{displayImages(navigation)}</View>
       </ScrollView>
+      
     </SafeAreaView>
   );
 };
@@ -82,7 +83,7 @@ const ProfileScreen = ({ navigation }) => {
 const displayImages = (navigation) => {
   return user.products.map(({ image, id }) => (
     <TouchableOpacity
-      key={user.id}
+      key={id}
       onPress={() => {
         navigation.navigate("ImageDisplay", { user: user.name, image: image });
       }}
