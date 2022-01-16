@@ -11,6 +11,7 @@ import {
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import SwopApi from "../apis/SwopAPI";
+import { useGlobalContext } from "../utils/context";
 
 const { width, height } = Dimensions.get("window");
 
@@ -34,8 +35,9 @@ const ProfileScreen = ({ navigation }) => {
   const stars = [];
   const [products, setProducts] = useState([]);
   
+  const { curUser } = useGlobalContext();
   useEffect(async () => {
-    const response = await SwopApi.getUserProducts(1);
+    const response = await SwopApi.getUserProducts(curUser);
     setProducts(response);
   }, []);
 
