@@ -5,12 +5,13 @@ import { SafeAreaView, StyleSheet, Text, View, Image } from "react-native";
 import SwipePageHeader from "../components/molecules/SwipePageHeader";
 import TinderCard from "react-tinder-card";
 import SwopApi from "../apis/SwopAPI";
+import { auth } from "../utils/firebase";
 
 function SwipeScreen({}) {
 
   const [products, setProducts] = useState([]);
   const [lastDirection, setLastDirection] = useState();
-  const user_id = 'olivia'
+  const user_id = auth.currentUser.uid;
 
   // call when products.length is 0
   const getProducts = async () => {

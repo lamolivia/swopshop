@@ -12,6 +12,7 @@ import {
 import { Ionicons } from "@expo/vector-icons";
 import SwopApi from "../apis/SwopAPI";
 import { useGlobalContext } from "../utils/context";
+import { auth } from "../utils/firebase";
 
 const { width, height } = Dimensions.get("window");
 
@@ -19,12 +20,12 @@ const ProfileScreen = ({ navigation }) => {
   const stars = [];
   const [products, setProducts] = useState([]);
   
-  const { curUser} = useGlobalContext();
+  const { curUser } = useGlobalContext();
   useEffect(async () => {
-    const response = await SwopApi.getUserProducts(curUser);
+    const response = await SwopApi.getUserProducts(auth.currentUser.uid);
     setProducts(response);
   }, []);
-
+  console.log(curUser);
   for (let i = 0; i < 5; i++) {
     let colour = i < curUser.rating ? "black" : "grey";
     stars.push(<Ionicons key={i} name="star" size={14} color={colour} />);

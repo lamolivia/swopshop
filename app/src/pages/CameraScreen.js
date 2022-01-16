@@ -6,6 +6,7 @@ import * as ImageManipulator from "expo-image-manipulator";
 import { getStorage, ref, uploadBytes } from "firebase/storage";
 import uuid from 'react-native-uuid';
 import SwopApi from "../apis/SwopAPI";
+import { auth } from "../utils/firebase";
 
 const CameraScreen = ({ navigation }) => {
   const [hasPermission, setHasPermission] = useState();
@@ -35,25 +36,19 @@ const CameraScreen = ({ navigation }) => {
   }
 
   useEffect(() => {
-    let image_name;
-    let uploaded = false;
     if (selfie) {
       //   What to do after taking photo     
       uploadImage(selfie)
-        .then( async (image_name) => {
-          image_name = image_name;
+        .then((image_name) => {
           console.log("Great Sucess.");
-          console.log(image_name);
-          uploaded = true;
+
+          return SwopApi.addUserProduct(auth.currentUser.uid, image_name, image_name, "12345.00");
+        })
+        .then((data) => {
+          console.log("uploaded to database");
         })
         .catch((error) => {
           console.log("Error")
-        })
-        .finally(async () => {
-          if (uploaded) {
-            const data = await SwopApi.addUserProduct(curUser, image_name, image_name);
-            console.log(data);
-          }
         });
     }
   }, [selfie]);

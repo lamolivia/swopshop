@@ -42,12 +42,13 @@ class SwopApi {
     return data.data;
   }
 
-  static async addUserProduct(user_id, product_id, product_name) {
+  static async addUserProduct(user_id, image, product_name, price) {
     const data = await get("/add_product", {
       params: {
         'user_id': user_id, 
-        'product_id': product_id, 
-        'product_name': product_name
+        'image': image, 
+        'product_name': product_name,
+        'price': price
       }
     });
     return data;
