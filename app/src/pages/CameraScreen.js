@@ -13,7 +13,7 @@ const CameraScreen = ({ navigation, route }) => {
   const [selfie, setSelfie] = useState();
   const cameraRef = useRef(null);
 
-  const { setProductImage } = useGlobalContext();
+  const { setImage } = route.params;
 
   useEffect(() => {
     (async () => {
@@ -43,7 +43,7 @@ const CameraScreen = ({ navigation, route }) => {
         .then((new_image) => {
           console.log("Great Sucess.");
           image_name = `products/${new_image}`;
-          return new Promise((r) => setTimeout(r, 2000));
+          return new Promise((r) => setTimeout(r, 8000));
         })
         .then(() => getDownloadURL(ref(storage, image_name)))
         .then((image_link) => setImage(image_link))

@@ -20,10 +20,9 @@ import { useGlobalContext } from "../utils/context";
 const AddProductScreen = ({ route, navigation }) => {
   const [productName, setName] = useState("");
   const [productPrice, setPrice] = useState("");
+  const [productImage, setImage] = useState("");
   const { get_all_products } = route.params;
   const user_id = auth.currentUser.uid;
-
-  const { productImage } = useGlobalContext();
 
   const uploadProductInfo = async () => {
     return SwopApi.addUserProduct(
@@ -40,7 +39,7 @@ const AddProductScreen = ({ route, navigation }) => {
         <View style={{ flex: 1 }}>
           <TouchableOpacity
             style={styles.camera}
-            onPress={() => navigation.navigate("Camera")}
+            onPress={() => navigation.navigate("Camera", { setImage })}
           >
             {productImage ? (
               <Image style={styles.image} source={{ uri: productImage }} />

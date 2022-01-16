@@ -26,7 +26,7 @@ import { auth, db } from "../utils/firebase";
 import { FontAwesome5 } from "@expo/vector-icons";
 import headers from "../styles/headers";
 
-const ChatRoomScreen = ({ route }) => {
+const ChatRoomScreen = ({ navigation, route }) => {
   const { chatRoomId, product, friend } = route.params;
   const scrollViewRef = useRef();
 
@@ -64,35 +64,35 @@ const ChatRoomScreen = ({ route }) => {
         behavior={Platform.OS === "ios" ? "padding" : "height"}
         style={{ justifyContent: "space-between", flexGrow: 1 }}
       >
+        <View style={styles.header}>
+          <View style={{ flexDirection: "row", alignItems: "center" }}>
+            <TouchableOpacity onPress={navigation.goBack}>
+              <FontAwesome5 name="chevron-left" size={22} color="black" />
+            </TouchableOpacity>
+            <View style={{ justifyContent: "space-between", marginLeft: 20 }}>
+              <Text style={[headers.h2, styles.prodName]}>{product.name}</Text>
+              <Text style={[headers.p, styles.userame]}>
+                @{friend.username}
+              </Text>
+            </View>
+          </View>
+          <View style={styles.descisionCont}>
+            <TouchableOpacity
+              style={[styles.descisionBtn, { backgroundColor: "#FF6961" }]}
+            >
+              <FontAwesome5 name="times" solid size={22} color="white" />
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[styles.descisionBtn, { backgroundColor: "#77dd77" }]}
+            >
+              <FontAwesome5 name="check" solid size={22} color="white" />
+            </TouchableOpacity>
+          </View>
+        </View>
         <TouchableWithoutFeedback
           onPress={Keyboard.dismiss}
           style={(styles.flexMax, { backgroundColor: "white", flexGrow: 1 })}
         >
-          <View style={styles.header}>
-            <View style={{ flexDirection: "row", alignItems: "center" }}>
-              <FontAwesome5 name="chevron-left" size={22} color="black" />
-              <View style={{ justifyContent: "space-between", marginLeft: 20 }}>
-                <Text style={[headers.h2, styles.prodName]}>
-                  {product.name}
-                </Text>
-                <Text style={[headers.p, styles.userame]}>
-                  @{friend.username}
-                </Text>
-              </View>
-            </View>
-            <View style={styles.descisionCont}>
-              <TouchableOpacity
-                style={[styles.descisionBtn, { backgroundColor: "#FF6961" }]}
-              >
-                <FontAwesome5 name="times" solid size={22} color="white" />
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={[styles.descisionBtn, { backgroundColor: "#77dd77" }]}
-              >
-                <FontAwesome5 name="check" solid size={22} color="white" />
-              </TouchableOpacity>
-            </View>
-          </View>
           <ScrollView
             ref={scrollViewRef}
             onContentSizeChange={() =>
@@ -100,17 +100,15 @@ const ChatRoomScreen = ({ route }) => {
             }
             contentContainerStyle={{ flexGrow: 1 }}
             showsVerticalScrollIndicator={false}
-            // automaticallyAdjustContentInsets={false}
             style={{
               // zIndex: 0,
               height: Dimensions.get("window").height - 150,
               //   flex: 1,
               paddingHorizontal: 10,
               backgroundColor: "#f0f0f0",
-              flexGrow: 0,
+              // flexGrow: 0,
             }}
           >
-            {/* <View style={{ flexGrow: 1 }}> */}
             {messages.map(({ id, data }) =>
               data.email === auth.currentUser.email ? (
                 <View key={id} style={styles.sender}>
