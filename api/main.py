@@ -139,10 +139,20 @@ async def test_dfs(user_id: str, product_id: str):
 @app.get("/get_products")
 async def products(user_id: str) -> List[dict]:
 
-    product_ref = db.collection('product').document(user_id)
-    user_products = product_ref.where('user_id', '==', user_id).stream()
+    product_ref = db.collection('product')
+    user_products = product_ref.where('user_id', '==', user_id)
+    user_products = user_products.get()
 
-    return user_products
+    res = []
+    for p in user_products:
+        res.append({
+            'user_id': p.get('user_id'),
+            'name': p.get('name'),
+            'image': p.get('image'),
+            'price': p.get('price')
+        })
+
+    return res
 
 @app.get("/add_product")
 async def add_product(user_id: str, image: str, product_name: str, price: str):
@@ -173,7 +183,17 @@ async def add_product(user_id: str, image: str, product_name: str, price: str):
 
 @app.get("/get_swipe_products")
 async def swipe_products(user_id: str) -> List[dict]:
-    product_ref = db.collection('product').document(user_id)
+    product_ref = db.collection('product')
     user_products = product_ref.where('user_id', '!=', user_id).limit(10).stream()
+    user_products = user_products.get()
 
-    return user_products
+    res = []
+    for p in user_products:
+        res.append({
+            'user_id': p.get('user_id'),
+            'name': p.get('name'),
+            'image': p.get('image'),
+            'price': p.get('price')
+        })
+
+    return res
