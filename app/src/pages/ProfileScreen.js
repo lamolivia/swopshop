@@ -82,7 +82,7 @@ const displayImages = (navigation) => {
     return user.images.map(({image, id}) => {
         return (
             <TouchableOpacity key={id} onPress={() => {navigation.navigate("ImageDisplay", {user: user.name, image: image})}}>
-                <View style={styles.image_view }>
+                <View key={id} style={styles.image_view }>
                     <Image 
                         style={styles.image}
                         source={image}
