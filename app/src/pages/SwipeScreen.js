@@ -13,7 +13,6 @@ function SwipeScreen({}) {
   const [products, setProducts] = useState([]);
   const [lastDirection, setLastDirection] = useState();
   const user_id = auth.currentUser.uid;
-
   let n = 0;
 
   const onShowPopup = () => {
@@ -24,21 +23,22 @@ function SwipeScreen({}) {
     popupRef.close()
   }
 
-  // call when products.length is 0
+  // TODO: call when products.length is 0
   const getProducts = async () => {
     const data = await SwopApi.getSwipeProducts(user_id);
-    console.log(data)
+    // console.log(data)
     setProducts(data);
   }
 
   useEffect(() => getProducts(), [])
 
   const swiped = async (user_id, product_id, direction) => {
-    let curr_product = products.pop();
+    products.pop();
     setLastDirection(direction);
     if (direction == 'right') {
       const data = await SwopApi.getRightSwiped(user_id, product_id)
       if (data.length > 0) {
+        console.log('match')
         n = data.length;
         onShowPopup();
       }

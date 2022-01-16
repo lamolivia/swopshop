@@ -4,12 +4,6 @@ import { StyleSheet, View, Image } from "react-native";
 function SwipePageHeader() {
   return (
     <View style={styles.header}>
-      {/* <View style={styles.user}>
-        <Image
-          style={styles.img}
-          source={require("../../../assets/Sample_User_Icon.png")}
-        />
-      </View> */}
 
       <Image
         style={styles.logo}
