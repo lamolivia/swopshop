@@ -12,9 +12,9 @@ function SwipeScreen({}) {
 
   const [products, setProducts] = useState([]);
   const [lastDirection, setLastDirection] = useState();
+  const [n, setn] = useState(0);
   const user_id = auth.currentUser.uid;
 
-  let n = 0;
 
   const onShowPopup = () => {
     popupRef.show()
@@ -39,7 +39,7 @@ function SwipeScreen({}) {
     if (direction == 'right') {
       const data = await SwopApi.getRightSwiped(user_id, product_id)
       if (data.length > 0) {
-        n = data.length;
+        setn(data.length)
         onShowPopup();
       }
     }

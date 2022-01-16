@@ -13,6 +13,7 @@ class Graph:
 
 		self.result = []
 		self.visited = {}
+		self.visited_users = {}
 		self.initial_product_id = ""
 
 	def contains_cycle(self, product_id: str, user_id: str):
@@ -32,6 +33,7 @@ class Graph:
 			# at one neighbor (the one to which we added the new edge)
 			self.initial_product_id = p
 			self.visited = {p : Process.UNDER_PROCESSING}
+			self.visited_users = {user_data.id : Process.UNDER_PROCESSING}
 			self.result = [p]
 			print(f"Starting Dfs from product {p}")
 			self._dfs(product_id=product_id)
@@ -50,8 +52,13 @@ class Graph:
 			print(f"exiting id {product_id}")
 			return False
 
+		user_id = self._get_user_id(product_id=product_id)
+		if self.visited_users[user_id] == Process.UNDER_PROCESSING:
+			return False
+
 		# mark as under processing
 		self.visited[product_id] = Process.UNDER_PROCESSING
+		self.visited_users[user_id] = Process.UNDER_PROCESSING
 		self.result.append(product_id)
 		for n in self._neighbours(product_id=product_id):
 			if self._dfs(product_id=n):
@@ -60,9 +67,21 @@ class Graph:
 
 		# mark as processed	
 		self.visited[product_id] = Process.PROCESSED
+		self.visited_users[user_id] = Process.NOT_PROCESSED
 		self.result.pop()
 		print(f"exiting id {product_id}")
 		return False
+
+	def _get_user_id(self, product_id: str):
+
+		products = self.db.collection('products').document(product_id)
+		products = products.get()
+		if not products.exists:
+			return []
+
+		products = products.to_dict()
+		user_id = products.get('user_id')
+		return user_id
 
 	def _get_user(self, product_id: str):
 
