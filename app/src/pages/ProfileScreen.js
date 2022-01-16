@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   StyleSheet,
   Image,
-  Dimensions,
+  Dimensions
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import SwopApi from "../apis/SwopAPI";

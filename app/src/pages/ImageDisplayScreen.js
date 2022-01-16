@@ -6,7 +6,7 @@ const ImageDisplayScreen = ({ route }) => {
   return (
     <SafeAreaView style={styles.container}>
       <Text style={{fontSize: 30, marginBottom: 20, marginTop: 20}}>{title} - ${price}</Text>
-      <Image style={styles.image} source={image} />
+      <Image style={styles.image} source={{uri:image}} />
     </SafeAreaView>
   );
 };
