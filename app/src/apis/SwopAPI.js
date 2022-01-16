@@ -16,6 +16,24 @@ class SwopApi {
     });
     return data.data;
   }
+
+  static async getSwipeProducts(user_id) {
+    const data = await get("/get_swipe_products", {
+      params: {'user_id' : user_id},
+    });
+    return data.data
+  }
+
+  static async getRightSwiped(user_id, product_id) {
+    const data = await get("/swipe_right", {
+      params: {
+        'user_id': user_id,
+        'product_id': product_id,
+    },
+      
+    });
+    return data.data
+  }
 }
 
 export default SwopApi;

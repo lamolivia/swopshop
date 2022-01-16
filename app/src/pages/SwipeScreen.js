@@ -3,52 +3,38 @@ import React, { useEffect, useState } from "react";
 import { SafeAreaView, StyleSheet, Text, View, Image } from "react-native";
 
 import SwipePageHeader from "../components/molecules/SwipePageHeader";
-// TODO : need to document dependencies for this
 import TinderCard from "react-tinder-card";
-
-const db = [
-  {
-    id: 1,
-    url: "https://picsum.photos/id/0/200/300",
-    desc: "Item, Priced at: $200",
-  },
-
-  {
-    id: 2,
-    url: "https://picsum.photos/id/157/200/300",
-    desc: "Item, Priced at: $75",
-  },
-
-  {
-    id: 3,
-    url: "https://picsum.photos/id/250/200/300",
-    desc: "Item, Priced at $118",
-  },
-
-  {
-    id: 4,
-    url: "https://picsum.photos/id/26/200/300",
-    desc: "Item, Priced at $60",
-  },
-
-  {
-    id: 5,
-    url: "https://picsum.photos/id/370/200/300",
-    desc: "Item, Priced at $500",
-  },
-];
+import SwopApi from "../apis/SwopAPI";
 
 function SwipeScreen({}) {
-  const cards = db;
-  const [lastDirection, setLastDirection] = useState();
 
-  const swiped = (direction, nameToDelete) => {
-    console.log("removing: " + nameToDelete);
+  const [products, setProducts] = useState([]);
+  const [lastDirection, setLastDirection] = useState();
+  const user_id = 'olivia'
+
+  // call when products.length is 0
+  const getProducts = async () => {
+    const data = await SwopApi.getSwipeProducts(1);
+    setProducts(data);
+  }
+
+  useEffect(() => getProducts(), [])
+
+  const swiped = async (user_id, product_id, direction) => {
+    let curr_product = products.pop();
+    // console.log(curr_product);
     setLastDirection(direction);
+    if (direction == 'right') {
+      const data = await SwopApi.getRightSwiped(user_id, product_id)
+      if (data.length > 0) {
+        console.log('match')
+        console.log(data)
+      }
+    }
   };
 
   const outOfFrame = (name) => {
-    console.log(name + " left the screen!");
+    // console.log(name + " left the screen!");
   };
 
   return (
@@ -62,19 +48,19 @@ function SwipeScreen({}) {
 
         <View style={{ flex: 1, flexDirection: "row" }}></View>
 
-        {cards.map((card) => (
+        {products.map((product) => (
           <TinderCard
-            key={card.id}
-            onSwipe={(dir) => swiped(dir, card.id)}
-            onCardLeftScreen={() => outOfFrame(card.id)}
+            key={product.product_id}
+            onSwipe={(dir) => swiped(user_id, product.product_id, dir)}
+            onCardLeftScreen={() => outOfFrame(product.product_id)}
           >
             <View style={styles.card}>
               <Image
                 style={styles.image}
-                source={{ uri: card.url }}
-                name={card.id}
+                source={{ uri: product.image }}
+                name={product.title}
               ></Image>
-              <Text style={styles.cardTitle}>{card.desc.toUpperCase()}</Text>
+              <Text style={styles.cardTitle}>{product.title.toUpperCase()}</Text>
             </View>
           </TinderCard>
         ))}
@@ -100,8 +86,8 @@ const styles = StyleSheet.create({
   card: {
     position: "absolute",
     backgroundColor: "white",
-    maxWidth: 260,
-    height: 300,
+    width: 300,
+    height: 450,
     shadowColor: "black",
     shadowOpacity: 0.2,
     shadowRadius: 20,
@@ -111,7 +97,7 @@ const styles = StyleSheet.create({
 
   cardTitle: {
     position: "absolute",
-    bottom: -150,
+    bottom: 0,
     margin: 15,
     fontSize: 20,
     color: "white",

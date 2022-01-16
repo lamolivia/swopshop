@@ -27,7 +27,7 @@ const Navigation = () => {
           headerShown: false,
         }}
       >
-        <Stack.Screen
+        {/* <Stack.Screen
           name="Signup"
           component={SignupScreen}
           options={{ animationEnabled: false }}
@@ -36,7 +36,7 @@ const Navigation = () => {
           name="Login"
           component={LoginScreen}
           options={{ animationEnabled: false }}
-        />
+        /> */}
         <Stack.Screen name="Home" component={TabNavigator} />
         <Stack.Screen
           name="Settings"
