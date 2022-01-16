@@ -106,7 +106,7 @@ const LoginScreen = ({ navigation }) => {
         </Text>
         <View style={styles.loginContainer}>
           <Text style={[headers.p, styles.loginTxt1]}>
-            Already have an account?{" "}
+            Don't have an account?{" "}
           </Text>
           <TouchableOpacity
             onPress={() => {
