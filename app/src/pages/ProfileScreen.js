@@ -15,15 +15,15 @@ const { width, height } = Dimensions.get("window");
 
 const user = {
   name: "mason_wong",
-  images: [
-    { image: require("../../assets/macbook.jpg"), id: 1 },
-    { image: require("../../assets/macbook.jpg"), id: 2 },
-    { image: require("../../assets/macbook.jpg"), id: 3 },
-    { image: require("../../assets/macbook.jpg"), id: 4 },
-    { image: require("../../assets/macbook.jpg"), id: 5 },
-    { image: require("../../assets/macbook.jpg"), id: 6 },
-    { image: require("../../assets/macbook.jpg"), id: 7 },
-    { image: require("../../assets/macbook.jpg"), id: 8 },
+  products: [
+    { image: require("../../assets/macbook.jpg"), id: 1, name: "MacBook"},
+    { image: require("../../assets/macbook.jpg"), id: 2, name: "MacBook"},
+    { image: require("../../assets/macbook.jpg"), id: 3, name: "MacBook"},
+    { image: require("../../assets/macbook.jpg"), id: 4, name: "MacBook"},
+    { image: require("../../assets/macbook.jpg"), id: 5, name: "MacBook"},
+    { image: require("../../assets/macbook.jpg"), id: 6, name: "MacBook"},
+    { image: require("../../assets/macbook.jpg"), id: 7, name: "MacBook"},
+    { image: require("../../assets/macbook.jpg"), id: 8, name: "MacBook"},
   ],
   rating: 4,
   location: "Vancouver, Canada",
@@ -33,7 +33,7 @@ const ProfileScreen = ({ navigation }) => {
   const stars = [];
   for (let i = 0; i < 5; i++) {
     let colour = i < user.rating ? "black" : "grey";
-    stars.push(<Ionicons name="star" size={14} color={colour} />);
+    stars.push(<Ionicons key={i} name="star" size={14} color={colour} />);
   }
 
   return (
@@ -67,7 +67,7 @@ const ProfileScreen = ({ navigation }) => {
           </View>
 
           <Text style={({ fontSize: 17 }, { fontWeight: "bold" })}>
-            {user.images.length} items
+            {user.products.length} items
           </Text>
         </View>
       </View>
@@ -75,19 +75,20 @@ const ProfileScreen = ({ navigation }) => {
       <ScrollView>
         <View style={styles.view2}>{displayImages(navigation)}</View>
       </ScrollView>
+      
     </SafeAreaView>
   );
 };
 
 const displayImages = (navigation) => {
-  return user.images.map(({ image, id }) => (
+  return user.products.map(({ image, id }) => (
     <TouchableOpacity
       key={id}
       onPress={() => {
         navigation.navigate("ImageDisplay", { user: user.name, image: image });
       }}
     >
-      <View key={id} style={styles.image_view}>
+      <View style={styles.image_view}>
         <Image style={styles.image} source={image} />
       </View>
     </TouchableOpacity>
