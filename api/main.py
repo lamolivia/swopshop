@@ -1,3 +1,4 @@
+from itertools import product
 import uvicorn
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -70,6 +71,7 @@ def create_chat_rooms(cycle: List[str]) -> None:
 
     left = len(cycle) - 1
     right = 0
+    curr_time = datetime.now()
 
     while right < len(cycle):
         curr_chat = db.collection('chatRooms').document()
@@ -80,13 +82,13 @@ def create_chat_rooms(cycle: List[str]) -> None:
             "seller_id": get_user_from_product(cycle[right]),
             "prod_id": cycle[right],
             "match_id": match_entry.id,
-            "last_message_time": ""
+            "last_message_time": curr_time
         })
         right += 1
         left = (left + 1) % len(cycle)
 
     match_entry.set({
-        "match_time": datetime.now(),
+        "match_time": curr_time,
         "expired": False,
         "chat_ids": chat_ids
     })
@@ -136,18 +138,42 @@ async def test_dfs(user_id: str, product_id: str):
 
 @app.get("/get_products")
 async def products(user_id: str) -> List[dict]:
-    return [
-        {"product_id": "asdlkfjakfa", "title": "Hello1", "price": "100", "image": "https://images.macrumors.com/t/ChPbcdmq7U5j6laUuR61rOjbh6g=/1600x0/article-new/2020/11/macbook-air-m1-unboxing.jpg"},
-    {"product_id": "asdfadsffaj", "title": "Hello3", "price": "100", "image": "https://thermaltake.azureedge.net/pub/media/catalog/product/cache/6bf0ed99c663954fafc930039201ed07/x/f/xfit_black-white01.jpg"},
-    {"product_id": "sdheihewhij", "title": "Hello5", "price": "100", "image": "https://thermaltake.azureedge.net/pub/media/catalog/product/cache/6bf0ed99c663954fafc930039201ed07/x/f/xfit_black-white01.jpg"}]
+
+    product_ref = db.collection('product').document(user_id)
+    user_products = product_ref.where('user_id', '==', user_id).stream()
+
+    return user_products
 
 @app.get("/add_product")
-async def add_product(user_id: str, image: str, product_name: str):
-    return 0
+async def add_product(user_id: str, image: str, product_name: str, price: str):
+    # get user stuff
+    user = db.collection('users').document(user_id)
+    user_data = user.get()
+
+    if not user_data.exists:
+        return 1
+
+    new_products = user_data.to_dict().get('products', [])
+
+    # create new product
+    product = db.collection('product').document()
+    product.set({
+        'user_id': user_id,
+        'image': image,
+        'name': product_name,
+        'price': price
+    })
+
+    # add product to user list
+    new_products.append(product.id)
+    user.update({
+        "products": new_products
+    })
+
 
 @app.get("/get_swipe_products")
 async def swipe_products(user_id: str) -> List[dict]:
-    return [
-    {"product_id": "GrAPM98SXEezkb6yRpBK", "title": "Hello3", "price": "100", "image": "https://thermaltake.azureedge.net/pub/media/catalog/product/cache/6bf0ed99c663954fafc930039201ed07/x/f/xfit_black-white01.jpg"},
-    {"product_id": "yUgG91kRoQ62KOHOio2h", "title": "Hello5", "price": "100", "image": "https://thermaltake.azureedge.net/pub/media/catalog/product/cache/6bf0ed99c663954fafc930039201ed07/x/f/xfit_black-white01.jpg"},
-        {"product_id": "john-prod", "title": "John", "price": "100", "image": "https://images.macrumors.com/t/ChPbcdmq7U5j6laUuR61rOjbh6g=/1600x0/article-new/2020/11/macbook-air-m1-unboxing.jpg"}]
+    product_ref = db.collection('product').document(user_id)
+    user_products = product_ref.where('user_id', '!=', user_id).limit(10).stream()
+
+    return user_products
