@@ -1,7 +1,0 @@
-{
-  "dependencies": {
-    "axios": "^0.24.0",
-    "react-native-uuid": "^2.0.1",
-    "uuidv4": "^6.2.12"
-  }
-}
