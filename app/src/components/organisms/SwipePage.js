@@ -12,9 +12,6 @@ import SwipePageHeader from '../molecules/SwipePageHeader';
 // TODO : need to document dependencies for this
 import TinderCard from 'react-tinder-card'
 
-import NopeStamp from '../atoms/NopeStamp';
-import LikeStamp from '../atoms/LikeStamp';
-
 const db = [
   {
    id: 1,
@@ -68,11 +65,9 @@ function SwipePage({}){
 			<SwipePageHeader></SwipePageHeader>
 
       <View style={styles.cardContainer}>
-        <Text style={{zIndex: 0, bottom: -200, marginLeft: 30, fontSize: 15}}>No more items available right now!</Text>
+        <Text style={{zIndex: 0, bottom: -200, marginLeft: 30, fontSize: 15}}>No more items available right now</Text>
 
         <View style={{flex: 1, flexDirection: 'row'}}>
-        {/* <NopeStamp></NopeStamp>
-        <LikeStamp></LikeStamp> */}
         </View>
 
      {cards.map((card) => 
@@ -126,6 +121,9 @@ const styles = StyleSheet.create({
     fontSize: 20,
     color: 'white',
     fontWeight: 'bold',
+    textShadowColor:'black',
+    textShadowRadius: 5,
+    textShadowOffset:{width: 1, height: 1},
   },
 
   image: {
@@ -136,7 +134,7 @@ const styles = StyleSheet.create({
   },
 
   notif: {
-    bottom: -475,
+    bottom: 35,
     flexDirection: 'row',
     alignItems: 'center',
     marginLeft: '35%',

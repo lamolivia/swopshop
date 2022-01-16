@@ -13,6 +13,7 @@ import TestSwipeScreen from "../pages/TestSwipeScreen";
 import TestChatScreen from "../pages/TestChatScreen";
 import ProfileScreen from "../pages/ProfileScreen";
 import SettingScreen from "../pages/SettingsScreen";
+import SwipePage from "../components/organisms/SwipePage";
 
 const Stack = createStackNavigator();
 const Tab = createMaterialBottomTabNavigator();
@@ -76,7 +77,7 @@ const TabNavigator = () => {
       />
       <Tab.Screen
         name="Swipe"
-        component={TestSwipeScreen}
+        component={SwipePage}
         options={{
           tabBarIcon: ({ color }) => (
             <FontAwesome5 name="sync-alt" solid color={color} size={22} />
