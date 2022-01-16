@@ -14,6 +14,8 @@ import TestChatScreen from "../pages/TestChatScreen";
 import ProfileScreen from "../pages/ProfileScreen";
 import SettingScreen from "../pages/SettingsScreen";
 import SwipePage from "../components/organisms/SwipePage";
+import CameraScreen from "../pages/CameraScreen";
+import ImageDisplayScreen from "../pages/ImageDisplayScreen";
 
 const Stack = createStackNavigator();
 const Tab = createMaterialBottomTabNavigator();
@@ -39,8 +41,18 @@ const Navigation = () => {
         />
         <Stack.Screen name="Home" component={TabNavigator} />
       <Stack.Screen
-          name="SettingScreen"
+          name="Settings"
           component={SettingScreen}
+          options={{ animationEnabled: true }}
+      />
+      <Stack.Screen
+          name="Camera"
+          component={CameraScreen}
+          options={{ animationEnabled: true }}
+      />
+      <Stack.Screen
+          name="ImageDisplay"
+          component={ImageDisplayScreen}
           options={{ animationEnabled: true }}
       />
       </Stack.Navigator>
