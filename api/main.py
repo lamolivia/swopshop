@@ -195,7 +195,8 @@ async def swipe_products(user_id: str) -> List[dict]:
             'user_id': p.get('user_id'),
             'name': p.get('name'),
             'image': p.get('image'),
-            'price': p.get('price')
+            'price': p.get('price'),
+            'product_id': p.id
         })
 
     return res
