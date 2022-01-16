@@ -42,7 +42,7 @@ const Navigation = () => {
           name="Login"
           component={LoginScreen}
           options={{ animationEnabled: false }}
-        /> */}
+        />
         <Stack.Screen name="Home" component={TabNavigator} />
         <Stack.Screen
           name="Settings"
