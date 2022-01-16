@@ -36,7 +36,9 @@ class Graph:
 			self.visited_users = {user_data.id : Process.UNDER_PROCESSING}
 			self.result = [p]
 			print(f"Starting Dfs from product {p}")
-			self._dfs(product_id=product_id)
+			res = self._dfs(product_id=product_id)
+			if res:
+				return self.result
 
 		return self.result if len(self.result) > 1 else []
 
@@ -44,7 +46,8 @@ class Graph:
 		print(f"dfs with id {product_id}")
 		visited = self.visited.get(product_id, Process.NOT_PROCESSED)
 		if visited == Process.UNDER_PROCESSING:
-			print(f"exiting id {product_id}")
+			print(f"exiting id {product_id} because of visited")
+			print(f"{self.initial_product_id}, {product_id}")
 			if self.initial_product_id == product_id:
 				return True
 			return False

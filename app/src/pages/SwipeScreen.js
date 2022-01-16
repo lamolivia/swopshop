@@ -12,7 +12,7 @@ function SwipeScreen({}) {
 
   const [products, setProducts] = useState([]);
   const [lastDirection, setLastDirection] = useState();
-  const [n, setn] = useState(0);
+  const [degreeMatch, setDegreeMatch] = useState((0));
   const user_id = auth.currentUser.uid;
 
   const onShowPopup = () => {
@@ -26,7 +26,6 @@ function SwipeScreen({}) {
   // TODO: call when products.length is 0
   const getProducts = async () => {
     const data = await SwopApi.getSwipeProducts(user_id);
-    // console.log(data)
     setProducts(data);
   }
 
@@ -38,7 +37,8 @@ function SwipeScreen({}) {
     if (direction == 'right') {
       const data = await SwopApi.getRightSwiped(user_id, product_id)
       if (data.length > 0) {
-        setn(data.length);
+        console.log('match')
+        setDegreeMatch(data.length);
         onShowPopup();
       }
     }
@@ -49,9 +49,8 @@ function SwipeScreen({}) {
   };
 
   return (
-    <SafeAreaView style={{ backgroundColor: "white" }}>
-      <SwipePageHeader></SwipePageHeader>
-
+    <SafeAreaView style={{ backgroundColor: "whitesmoke" }}>
+      <View style={{height: 30, backgroundColor: "whitesmoke"}} />
       <View style={styles.cardContainer}>
         <Text style={{ zIndex: 0, bottom: -200, marginLeft: 30, fontSize: 15 }}>
           No more items available right now
@@ -77,14 +76,14 @@ function SwipeScreen({}) {
         ))}
       </View>
 
-      {lastDirection ? (
+      {/* {lastDirection ? (
         <Text style={styles.notif}>You swiped {lastDirection}</Text>
       ) : (
         <Text style={styles.notif} />
-      )}
+      )} */}
 
     <Match
-      // matchDegree={n}
+      matchDegree={degreeMatch}
       ref={(target) => popupRef = target}
       onTouchOutside = {onClosePopup}
       />
@@ -102,10 +101,10 @@ const styles = StyleSheet.create({
     position: "absolute",
     backgroundColor: "white",
     width: 300,
-    height: 450,
-    shadowColor: "black",
-    shadowOpacity: 0.2,
-    shadowRadius: 20,
+    height: 600,
+    shadowColor: "grey",
+    shadowOpacity: 0.1,
+    shadowRadius: 5,
     borderRadius: 20,
     resizeMode: "cover",
   },
@@ -123,7 +122,7 @@ const styles = StyleSheet.create({
   },
 
   image: {
-    height: 450,
+    height: 600,
     width: 300,
     borderRadius: 20,
     overflow: "hidden",
