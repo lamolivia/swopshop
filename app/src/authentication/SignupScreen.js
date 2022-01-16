@@ -11,10 +11,9 @@ import {
   View,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-// import * as WebBrowser from "expo-web-browser";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { auth } from "../utils/firebase";
+import { auth, db } from "../utils/firebase";
 import { doc, setDoc, Timestamp } from "@firebase/firestore";
 import {
   createUserWithEmailAndPassword,
@@ -24,10 +23,8 @@ import {
 import colors from "../styles/colors";
 import headers from "../styles/headers";
 
-// WebBrowser.maybeCompleteAuthSession();
-
 const RegisterSchema = Yup.object().shape({
-  name: Yup.string().required("Required"),
+  username: Yup.string().required("Required"),
   email: Yup.string().email("Invalid email").required("Required"),
   password: Yup.string()
     .min(6, "Must be 6 characters or more")
@@ -50,7 +47,7 @@ const SignupScreen = ({ navigation }) => {
 
   const formik = useFormik({
     initialValues: {
-      name: "",
+      username: "",
       email: "",
       password: "",
       confirmPassword: "",
@@ -63,23 +60,27 @@ const SignupScreen = ({ navigation }) => {
   });
 
   // Sign up with email
-  const signUp = async ({ name, email, password }) => {
+  const signUp = async ({ username, email, password }) => {
     createUserWithEmailAndPassword(auth, email, password)
       .then((cred) => {
-        updateProfile(getAuth().currentUser, { displayName: name });
+        updateProfile(getAuth().currentUser, username);
         setDoc(doc(db, "users", cred.user.uid), {
           dateCreated: Timestamp.fromDate(new Date()),
-          displayName: name,
-          streak: 0,
+          username,
         });
       })
-      .then(() => navigation.navigate("OnboardingBirthday"))
+      .then(() => navigation.navigate("Home"))
       .catch((err) => setFirebaseError(err));
   };
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
       <SafeAreaView style={styles.container}>
+        <Image
+          style={styles.logo}
+          source={require("../../assets/swoplogo-removebg.png")}
+        ></Image>
+
         {/* <Image source={"../../assets/swoplogo.PNG"} style={styles.logo} /> */}
         <View style={styles.textInputCont}>
           <Ionicons name="person" size={24} style={styles.textInputIcon} />
@@ -89,14 +90,16 @@ const SignupScreen = ({ navigation }) => {
             placeholder="Name"
             placeholderTextColor={colors.darkGray}
             returnKeyType="next"
-            value={formik.values.name}
-            onChangeText={formik.handleChange("name")}
+            value={formik.values.username}
+            onChangeText={formik.handleChange("username")}
             onSubmitEditing={() => refEmail.current.focus()}
             style={[headers.p, styles.input]}
           />
         </View>
-        {formik.touched.name && formik.errors.name ? (
-          <Text style={[headers.p, styles.error]}>{formik.errors.name}</Text>
+        {formik.touched.username && formik.errors.username ? (
+          <Text style={[headers.p, styles.error]}>
+            {formik.errors.username}
+          </Text>
         ) : null}
         <View style={styles.textInputCont}>
           <Ionicons name="ios-mail" size={24} style={styles.textInputIcon} />
@@ -168,7 +171,7 @@ const SignupScreen = ({ navigation }) => {
         <TouchableOpacity
           style={[
             styles.submit,
-            !formik.values.name ||
+            !formik.values.username ||
             !formik.values.email ||
             !formik.values.password ||
             !formik.values.confirmPassword
@@ -176,7 +179,7 @@ const SignupScreen = ({ navigation }) => {
               : null,
           ]}
           disabled={
-            !formik.values.name ||
+            !formik.values.username ||
             !formik.values.email ||
             !formik.values.password ||
             !formik.values.confirmPassword
@@ -212,7 +215,12 @@ export default SignupScreen;
 
 const styles = StyleSheet.create({
   container: { flex: 1, marginHorizontal: 10 },
-  logo: { height: 100 },
+  logo: {
+    width: 330,
+    height: 160,
+    marginTop: 40,
+    alignSelf: "center",
+  },
   textInputCont: {
     flexDirection: "row",
     alignItems: "center",

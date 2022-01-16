@@ -1,11 +1,16 @@
 import React from "react";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import { FontAwesome5 } from "@expo/vector-icons";
+
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import SignupScreen from "../authentication/SignupScreen";
 import LoginScreen from "../authentication/LoginScreen";
 import colors from "../styles/colors";
+import TestProfileScreen from "../pages/TestProfileScreen";
+import TestSwipeScreen from "../pages/TestSwipeScreen";
+import TestChatScreen from "../pages/TestChatScreen";
 
 const Stack = createStackNavigator();
 const Tab = createMaterialBottomTabNavigator();
@@ -54,20 +59,29 @@ const TabNavigator = () => {
       }}
     >
       <Tab.Screen
-        name="Signup"
-        component={SignupScreen}
+        name="Profile"
+        component={TestProfileScreen}
         options={{
           tabBarIcon: ({ color }) => (
-            <MaterialCommunityIcons name="home" color={color} size={26} />
+            <FontAwesome5 name="user" solid color={color} size={22} />
           ),
         }}
       />
       <Tab.Screen
-        name="Main"
-        component={Main}
+        name="Swipe"
+        component={TestSwipeScreen}
         options={{
           tabBarIcon: ({ color }) => (
-            <MaterialCommunityIcons name="home" color={color} size={26} />
+            <FontAwesome5 name="sync-alt" solid color={color} size={22} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Chat"
+        component={TestChatScreen}
+        options={{
+          tabBarIcon: ({ color }) => (
+            <FontAwesome5 name="comments" solid color={color} size={22} />
           ),
         }}
       />
