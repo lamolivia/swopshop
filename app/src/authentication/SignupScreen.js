@@ -66,7 +66,7 @@ const SignupScreen = ({ navigation }) => {
     createUserWithEmailAndPassword(auth, email, password)
       .then((cred) => {
         updateProfile(getAuth().currentUser, { displayName: username });
-        setDoc(doc(db, "users", cred.user.uid), {
+        return setDoc(doc(db, "users", cred.user.uid), {
           dateCreated: Timestamp.fromDate(new Date()),
           location: "Vancouver, Canada",
           products: [],
