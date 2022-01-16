@@ -20,7 +20,7 @@ const AddProductScreen = ( { route, navigation } ) => {
     };
     return (
         <SafeAreaView style={styles.container}>
-            <TouchableOpacity onPress={() => {navigation.navigate("Camera", { setImage })}}>    
+            <TouchableOpacity style={styles.icon} onPress={() => {navigation.navigate("Camera", { setImage })}}>    
                 <Ionicons name="camera" size={35} color="black" />
             </TouchableOpacity>
             {productImage !== "" ? (
@@ -29,7 +29,7 @@ const AddProductScreen = ( { route, navigation } ) => {
                 null
             )}
             <Text style={headers.h2}>
-                Enter Product Name:
+                Product Name:
             </Text>
             <TextInput
                 style={styles.inputStyle}
@@ -40,7 +40,7 @@ const AddProductScreen = ( { route, navigation } ) => {
                 onChangeText={(newName) => setName(newName)}
             />
             <Text style={headers.h2}>
-                Enter Price ($):
+                Price ($):
             </Text>
             <TextInput
                 style={styles.inputStyle}
@@ -100,7 +100,11 @@ const styles = StyleSheet.create({
       color: colors.primary,
       fontSize: 15,
     },
-    container: { flex: 1, marginHorizontal: 10 }
+    container: { flex: 1, marginHorizontal: 10 },
+    icon: {
+        alignSelf:"flex-end",
+        paddingBottom: 5
+    }
 });
 
 export default AddProductScreen;
