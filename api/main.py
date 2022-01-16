@@ -56,7 +56,7 @@ async def get_user(user_id: str):
 
 def get_user_from_product(product_id: str) -> str:
 
-    product = db.collection('product').document(product_id)
+    product = db.collection('products').document(product_id)
     product = product.get()
 
     if not product.exists:
@@ -139,7 +139,7 @@ async def test_dfs(user_id: str, product_id: str):
 @app.get("/get_products")
 async def products(user_id: str) -> List[dict]:
 
-    product_ref = db.collection('product')
+    product_ref = db.collection('products')
     user_products = product_ref.where('user_id', '==', user_id)
     user_products = user_products.get()
 
@@ -166,7 +166,7 @@ async def add_product(user_id: str, image: str, product_name: str, price: str):
     new_products = user_data.to_dict().get('products', [])
 
     # create new product
-    product = db.collection('product').document()
+    product = db.collection('products').document()
     product.set({
         'user_id': user_id,
         'image': image,
@@ -180,10 +180,12 @@ async def add_product(user_id: str, image: str, product_name: str, price: str):
         "products": new_products
     })
 
+    return 0
+
 
 @app.get("/get_swipe_products")
 async def swipe_products(user_id: str) -> List[dict]:
-    product_ref = db.collection('product')
+    product_ref = db.collection('products')
     user_products = product_ref.where('user_id', '!=', user_id).limit(10).stream()
     user_products = user_products.get()
 

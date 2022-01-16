@@ -66,7 +66,7 @@ class Graph:
 
 	def _get_user(self, product_id: str):
 
-		products = self.db.collection('product').document(product_id)
+		products = self.db.collection('products').document(product_id)
 		products = products.get()
 		if not products.exists:
 			return []
