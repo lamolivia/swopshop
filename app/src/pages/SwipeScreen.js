@@ -49,9 +49,8 @@ function SwipeScreen({}) {
   };
 
   return (
-    <SafeAreaView style={{ backgroundColor: "white" }}>
-      <SwipePageHeader></SwipePageHeader>
-
+    <SafeAreaView style={{ backgroundColor: "whitesmoke" }}>
+      <View style={{height: 30, backgroundColor: "whitesmoke"}} />
       <View style={styles.cardContainer}>
         <Text style={{ zIndex: 0, bottom: -200, marginLeft: 30, fontSize: 15 }}>
           No more items available right now
@@ -102,10 +101,10 @@ const styles = StyleSheet.create({
     position: "absolute",
     backgroundColor: "white",
     width: 300,
-    height: 450,
-    shadowColor: "black",
-    shadowOpacity: 0.2,
-    shadowRadius: 20,
+    height: 600,
+    shadowColor: "grey",
+    shadowOpacity: 0.1,
+    shadowRadius: 5,
     borderRadius: 20,
     resizeMode: "cover",
   },
