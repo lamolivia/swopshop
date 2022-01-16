@@ -65,9 +65,15 @@ const SignupScreen = ({ navigation }) => {
   const signUp = async ({ username, email, password }) => {
     createUserWithEmailAndPassword(auth, email, password)
       .then((cred) => {
-        updateProfile(getAuth().currentUser, username);
+        updateProfile(getAuth().currentUser, { displayName: username });
         setDoc(doc(db, "users", cred.user.uid), {
           dateCreated: Timestamp.fromDate(new Date()),
+          location: "Vancouver, Canada",
+          products: [
+            { image: require("../../assets/macbook.jpg"), id: 1 },
+            { image: require("../../assets/macbook.jpg"), id: 2 },
+          ],
+          rating: Math.floor(Math.random() * 6),
           username,
         });
       })

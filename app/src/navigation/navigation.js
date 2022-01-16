@@ -14,6 +14,7 @@ import SettingScreen from "../pages/SettingsScreen";
 import SwipeScreen from "../pages/SwipeScreen";
 import CameraScreen from "../pages/CameraScreen";
 import ImageDisplayScreen from "../pages/ImageDisplayScreen";
+import SplashScreen from "../pages/SplashScreen";
 
 const Stack = createStackNavigator();
 const Tab = createMaterialBottomTabNavigator();
@@ -27,6 +28,11 @@ const Navigation = () => {
           headerShown: false,
         }}
       >
+        <Stack.Screen
+          name="Splash"
+          component={SplashScreen}
+          options={{ animationEnabled: false }}
+        />
         <Stack.Screen
           name="Signup"
           component={SignupScreen}
