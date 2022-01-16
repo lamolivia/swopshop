@@ -33,6 +33,7 @@ const ProfileScreen = ({ navigation }) => {
   }, []);
 
   console.log(curUser);
+  console.log(products);
   for (let i = 0; i < 5; i++) {
     let colour = i < curUser.rating ? "black" : "grey";
     stars.push(<Ionicons key={i} name="star" size={14} color={colour} />);
@@ -75,19 +76,19 @@ const ProfileScreen = ({ navigation }) => {
       </View>
 
       <ScrollView>
-        <View style={styles.view2}>{displayImages(navigation, products)}</View>
+        <View style={styles.view2}>{displayImages(navigation, products, curUser)}</View>
       </ScrollView>
       
     </SafeAreaView>
   );
 };
 
-const displayImages = (navigation, products) => {
-  return products.map(({image, product_id}) => (
+const displayImages = (navigation, products, curUser) => {
+  return products.map(({image}, index) => (
     <TouchableOpacity
-      key={product_id}
+      key={index}
       onPress={() => {
-        navigation.navigate("ImageDisplay", { user: user.name, image: image, title: "hello", price: "100" });
+        navigation.navigate("ImageDisplay", { user: curUser.username, image: image, title: "hello", price: "100" });
       }}
     >
       <View style={styles.image_view}>
