@@ -53,7 +53,7 @@ class Graph:
 			return False
 
 		user_id = self._get_user_id(product_id=product_id)
-		if self.visited_users[user_id] == Process.UNDER_PROCESSING:
+		if self.visited_users.get(user_id, Process.NOT_PROCESSED) == Process.UNDER_PROCESSING:
 			return False
 
 		# mark as under processing
