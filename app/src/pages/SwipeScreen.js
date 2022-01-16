@@ -12,7 +12,6 @@ function SwipeScreen({}) {
 
   const [products, setProducts] = useState([]);
   const [lastDirection, setLastDirection] = useState();
-  const [n, setn] = useState(0);
   const user_id = auth.currentUser.uid;
 
   const onShowPopup = () => {
@@ -38,7 +37,8 @@ function SwipeScreen({}) {
     if (direction == 'right') {
       const data = await SwopApi.getRightSwiped(user_id, product_id)
       if (data.length > 0) {
-        setn(data.length);
+        console.log('match')
+        // n = data.length;
         onShowPopup();
       }
     }
@@ -50,7 +50,8 @@ function SwipeScreen({}) {
 
   return (
     <SafeAreaView style={{ backgroundColor: "white" }}>
-      <View style={{height: 30}} />
+      <SwipePageHeader></SwipePageHeader>
+
       <View style={styles.cardContainer}>
         <Text style={{ zIndex: 0, bottom: -200, marginLeft: 30, fontSize: 15 }}>
           No more items available right now
@@ -76,14 +77,14 @@ function SwipeScreen({}) {
         ))}
       </View>
 
-      {/*lastDirection ? (
+      {lastDirection ? (
         <Text style={styles.notif}>You swiped {lastDirection}</Text>
       ) : (
         <Text style={styles.notif} />
-      )*/}
+      )}
 
     <Match
-      matchDegree={n}
+      // matchDegree={n}
       ref={(target) => popupRef = target}
       onTouchOutside = {onClosePopup}
       />
@@ -101,7 +102,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     backgroundColor: "white",
     width: 300,
-    height: 600,
+    height: 450,
     shadowColor: "black",
     shadowOpacity: 0.2,
     shadowRadius: 20,
@@ -122,7 +123,7 @@ const styles = StyleSheet.create({
   },
 
   image: {
-    height: 600,
+    height: 450,
     width: 300,
     borderRadius: 20,
     overflow: "hidden",
