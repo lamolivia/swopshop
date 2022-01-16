@@ -22,6 +22,8 @@ import {
 } from "firebase/auth";
 import colors from "../styles/colors";
 import headers from "../styles/headers";
+import SwopTextInput from "../components/atoms/TextInput";
+import SwopButton from "../components/atoms/SwopButton";
 
 const RegisterSchema = Yup.object().shape({
   username: Yup.string().required("Required"),
@@ -79,130 +81,95 @@ const SignupScreen = ({ navigation }) => {
         <Image
           style={styles.logo}
           source={require("../../assets/swoplogo-removebg.png")}
-        ></Image>
-
-        {/* <Image source={"../../assets/swoplogo.PNG"} style={styles.logo} /> */}
-        <View style={styles.textInputCont}>
-          <Ionicons name="person" size={24} style={styles.textInputIcon} />
-          <TextInput
-            autoCorrect={false}
-            enablesReturnKeyAutomatically={true}
-            placeholder="Name"
-            placeholderTextColor={colors.darkGray}
-            returnKeyType="next"
-            value={formik.values.username}
-            onChangeText={formik.handleChange("username")}
-            onSubmitEditing={() => refEmail.current.focus()}
-            style={[headers.p, styles.input]}
-          />
-        </View>
+        />
+        <SwopTextInput
+          icon="user"
+          value={formik.values.username}
+          onChange={(text) => {
+            setFirebaseError({});
+            formik.setFieldValue("username", text);
+          }}
+          placeholder="Username"
+          onSubmitEditing={() => refEmail.current.focus()}
+        />
         {formik.touched.username && formik.errors.username ? (
           <Text style={[headers.p, styles.error]}>
             {formik.errors.username}
           </Text>
         ) : null}
-        <View style={styles.textInputCont}>
-          <Ionicons name="ios-mail" size={24} style={styles.textInputIcon} />
-          <TextInput
-            autoCorrect={false}
-            enablesReturnKeyAutomatically={true}
-            placeholder="E-mail"
-            placeholderTextColor={colors.darkGray}
-            keyboardType="email-address"
-            returnKeyType="next"
-            value={formik.values.email}
-            onChangeText={formik.handleChange("email")}
-            onSubmitEditing={() => refPassword.current.focus()}
-            ref={refEmail}
-            style={[headers.p, styles.input]}
-          />
-        </View>
+        <SwopTextInput
+          icon="envelope"
+          value={formik.values.email}
+          onChange={(text) => {
+            setFirebaseError({});
+            formik.setFieldValue("email", text);
+          }}
+          placeholder="E-mail"
+          onSubmitEditing={() => refPassword.current.focus()}
+          reference={refEmail}
+        />
         {formik.touched.email && formik.errors.email ? (
           <Text style={[headers.p, styles.error]}>{formik.errors.email}</Text>
         ) : null}
-        <View style={styles.textInputCont}>
-          <Ionicons
-            name="ios-lock-closed"
-            size={24}
-            style={styles.textInputIcon}
-          />
-          <TextInput
-            autoCorrect={false}
-            enablesReturnKeyAutomatically={true}
-            placeholder="Password"
-            placeholderTextColor={colors.darkGray}
-            secureTextEntry
-            value={formik.values.password}
-            onChangeText={formik.handleChange("password")}
-            onSubmitEditing={() => refConfirmPassword.current.focus()}
-            ref={refPassword}
-            style={[headers.p, styles.input]}
-          />
-        </View>
+        <SwopTextInput
+          icon="lock"
+          onChange={(text) => {
+            setFirebaseError({});
+            formik.setFieldValue("password", text);
+          }}
+          onSubmitEditing={() => refConfirmPassword.current.focus()}
+          placeholder="Password"
+          reference={refPassword}
+          value={formik.values.password}
+          hidden
+        />
         {formik.touched.password && formik.errors.password ? (
           <Text style={[headers.p, styles.error]}>
             {formik.errors.password}
           </Text>
         ) : null}
-        <View style={styles.textInputCont}>
-          <Ionicons
-            name="ios-lock-closed"
-            size={24}
-            style={styles.textInputIcon}
-          />
-          <TextInput
-            autoCorrect={false}
-            enablesReturnKeyAutomatically={true}
-            placeholder="Confirm Password"
-            placeholderTextColor={colors.darkGray}
-            secureTextEntry
-            value={formik.values.confirmPassword}
-            onChangeText={formik.handleChange("confirmPassword")}
-            onSubmitEditing={formik.handleSubmit}
-            ref={refConfirmPassword}
-            style={[headers.p, styles.input]}
-          />
-        </View>
+        <SwopTextInput
+          icon="lock"
+          onChange={(text) => {
+            setFirebaseError({});
+            formik.setFieldValue("confirmPassword", text);
+          }}
+          onSubmitEditing={formik.handleSubmit}
+          placeholder="Confirm Password"
+          reference={refConfirmPassword}
+          value={formik.values.confirmPassword}
+          hidden
+        />
         {formik.touched.confirmPassword && formik.errors.confirmPassword ? (
           <Text style={[headers.p, styles.error]}>
             {formik.errors.confirmPassword}
           </Text>
         ) : null}
-        <TouchableOpacity
-          style={[
-            styles.submit,
-            !formik.values.username ||
-            !formik.values.email ||
-            !formik.values.password ||
-            !formik.values.confirmPassword
-              ? { backgroundColor: colors.lightGray }
-              : null,
-          ]}
+        <SwopButton
+          title="Sign up"
+          onPress={formik.handleSubmit}
           disabled={
             !formik.values.username ||
             !formik.values.email ||
             !formik.values.password ||
             !formik.values.confirmPassword
           }
-          onPress={formik.handleSubmit}
-        >
-          <Text style={[headers.p, styles.submitTxt]}>Sign up</Text>
-        </TouchableOpacity>
+        />
         <Text style={[headers.p, styles.error]}>
           {Object.keys(errorCodes).includes(firebaseError.code)
             ? errorCodes[firebaseError.code]
             : firebaseError.message}
         </Text>
-        <View style={styles.split}>
-          <View style={styles.bar} />
-          <Text style={[headers.p, styles.barText]}> or Login with </Text>
-          <View style={styles.bar} />
-        </View>
         <View style={styles.loginContainer}>
           <Text style={[headers.p, styles.loginTxt1]}>
             Already have an account?{" "}
           </Text>
-          <TouchableOpacity onPress={() => navigation.navigate("Login")}>
+          <TouchableOpacity
+            onPress={() => {
+              formik.resetForm();
+              navigation.navigate("Login");
+            }}
+          >
             <Text style={[headers.p, styles.loginTxt2]}>Login</Text>
           </TouchableOpacity>
         </View>
@@ -216,46 +183,22 @@ export default SignupScreen;
 const styles = StyleSheet.create({
   container: { flex: 1, marginHorizontal: 10 },
   logo: {
-    width: 330,
-    height: 160,
-    marginTop: 40,
+    width: 150,
+    height: 75,
+    marginVertical: 20,
     alignSelf: "center",
-  },
-  textInputCont: {
-    flexDirection: "row",
-    alignItems: "center",
-    borderRadius: 5,
-    backgroundColor: colors.lightGray,
-    marginVertical: 10,
-  },
-  textInputIcon: {
-    paddingHorizontal: 10,
-    color: colors.darkGray,
-  },
-  input: {
-    flex: 1,
-    paddingRight: 10,
-    paddingVertical: 10,
   },
   submit: {
     marginTop: "auto",
     marginBottom: 10,
     paddingVertical: 10,
-    borderRadius: 5,
+    borderRadius: 25,
     backgroundColor: colors.primary,
   },
   submitTxt: {
     textAlign: "center",
     color: "white",
   },
-  split: {
-    marginVertical: 10,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-  },
-  bar: { flex: 1, borderBottomWidth: 1.5, borderBottomColor: colors.lightGray },
-  barText: { marginHorizontal: 5, color: colors.lightGray, fontSize: 15 },
   loginContainer: {
     marginTop: 10,
     marginBottom: 20,
