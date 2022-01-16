@@ -50,8 +50,7 @@ function SwipeScreen({}) {
 
   return (
     <SafeAreaView style={{ backgroundColor: "white" }}>
-      <SwipePageHeader></SwipePageHeader>
-
+      <View style={{height: 30}} />
       <View style={styles.cardContainer}>
         <Text style={{ zIndex: 0, bottom: -200, marginLeft: 30, fontSize: 15 }}>
           No more items available right now
@@ -77,11 +76,11 @@ function SwipeScreen({}) {
         ))}
       </View>
 
-      {lastDirection ? (
+      {/*lastDirection ? (
         <Text style={styles.notif}>You swiped {lastDirection}</Text>
       ) : (
         <Text style={styles.notif} />
-      )}
+      )*/}
 
     <Match
       matchDegree={n}
@@ -102,7 +101,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     backgroundColor: "white",
     width: 300,
-    height: 450,
+    height: 600,
     shadowColor: "black",
     shadowOpacity: 0.2,
     shadowRadius: 20,
@@ -123,7 +122,7 @@ const styles = StyleSheet.create({
   },
 
   image: {
-    height: 450,
+    height: 600,
     width: 300,
     borderRadius: 20,
     overflow: "hidden",
