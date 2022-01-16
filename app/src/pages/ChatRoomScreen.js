@@ -68,13 +68,13 @@ const ChatRoomScreen = ({ route }) => {
       >
         <TouchableWithoutFeedback
           onPress={Keyboard.dismiss}
-          style={(styles.flexMax, { backgroundColor: "purple", flexGrow: 1 })}
+          style={(styles.flexMax, { backgroundColor: "white", flexGrow: 1 })}
         >
           <View>
             <Text style={headers.h2}>MacBook Air</Text>
           </View>
           <ScrollView
-            style={(styles.flexMax, { backgroundColor: "white", flexGrow: 1 })}
+            style={{zIndex: 0, height: '80%', backgroundColor: "white", flexGrow: 1, top: 5}}
           >
             {messages.map(({ id, data }) =>
               data.email === auth.currentUser.email ? (
@@ -151,6 +151,7 @@ const styles = StyleSheet.create({
     borderRadius: 25,
     paddingVertical: 10,
     paddingHorizontal: 20,
+    zIndex: 3
   },
   textInput: { flex: 1 },
 });
