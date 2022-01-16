@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 
 import { SafeAreaView, StyleSheet, Text, View, Image } from "react-native";
 
+import Match from "../components/molecules/Match"
 import SwipePageHeader from "../components/molecules/SwipePageHeader";
 import TinderCard from "react-tinder-card";
 import SwopApi from "../apis/SwopAPI";
@@ -13,6 +14,16 @@ function SwipeScreen({}) {
   const [lastDirection, setLastDirection] = useState();
   const user_id = auth.currentUser.uid;
 
+  let n = 0;
+
+  const onShowPopup = () => {
+    popupRef.show()
+  }
+
+  const onClosePopup = () => {
+    popupRef.close()
+  }
+
   // call when products.length is 0
   const getProducts = async () => {
     const data = await SwopApi.getSwipeProducts(1);
@@ -23,13 +34,12 @@ function SwipeScreen({}) {
 
   const swiped = async (user_id, product_id, direction) => {
     let curr_product = products.pop();
-    // console.log(curr_product);
     setLastDirection(direction);
     if (direction == 'right') {
       const data = await SwopApi.getRightSwiped(user_id, product_id)
       if (data.length > 0) {
-        console.log('match')
-        console.log(data)
+        n = data.length;
+        onShowPopup();
       }
     }
   };
@@ -73,7 +83,11 @@ function SwipeScreen({}) {
         <Text style={styles.notif} />
       )}
 
-      {/* <Footer></Footer> */}
+    <Match
+      matchDegree={n}
+      ref={(target) => popupRef = target}
+      onTouchOutside = {onClosePopup}
+      />
     </SafeAreaView>
   );
 }
