@@ -86,7 +86,7 @@ const SignupScreen = ({ navigation }) => {
       <SafeAreaView style={styles.container}>
         <Image
           style={styles.logo}
-          source={require("../../assets/swoplogo-removebg.png")}
+          source={require("../../assets/swoplogo.png")}
         />
         <SwopTextInput
           icon="user"
