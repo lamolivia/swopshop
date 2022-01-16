@@ -50,6 +50,7 @@ const ChatRoomsScreen = () => {
         {userChatRooms.map(({ id, buyer_id, seller_id, prod_id }, i) => (
           <ChatRoomPreview
             key={id}
+            id={id}
             buyerId={buyer_id}
             sellerId={seller_id}
             productId={prod_id}

@@ -13,6 +13,7 @@ import CameraScreen from "../pages/CameraScreen";
 import ImageDisplayScreen from "../pages/ImageDisplayScreen";
 import SplashScreen from "../pages/SplashScreen";
 import ChatRoomsScreen from "../pages/ChatRoomsScreen";
+import ChatRoomScreen from "../pages/ChatRoomScreen";
 
 const Stack = createStackNavigator();
 const Tab = createMaterialBottomTabNavigator();
@@ -55,6 +56,11 @@ const Navigation = () => {
         <Stack.Screen
           name="ImageDisplay"
           component={ImageDisplayScreen}
+          options={{ animationEnabled: true }}
+        />
+        <Stack.Screen
+          name="ChatRoom"
+          component={ChatRoomScreen}
           options={{ animationEnabled: true }}
         />
       </Stack.Navigator>

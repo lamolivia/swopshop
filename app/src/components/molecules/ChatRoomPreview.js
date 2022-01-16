@@ -1,3 +1,4 @@
+import { useNavigation } from "@react-navigation/native";
 import { doc, getDoc } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
@@ -10,28 +11,26 @@ const ChatRoomPreview = ({ id, buyerId, sellerId, productId, index }) => {
   const [seller, setSeller] = useState();
   const [product, setProduct] = useState();
 
+  const navigation = useNavigation();
+
   const selling = auth.currentUser.uid === sellerId;
 
   useEffect(() => {
     (async () => {
       const buyerSnap = await getDoc(doc(db, "users", buyerId));
-      console.log("yurrr", productId);
       setBuyer(buyerSnap.data());
       const sellerSnap = await getDoc(doc(db, "users", sellerId));
       setSeller(sellerSnap.data());
       const productSnap = await getDoc(doc(db, "products", productId));
       setProduct(productSnap.data());
-      console.log(
-        "yayaay",
-        buyerSnap.data(),
-        sellerSnap.data(),
-        productSnap.data()
-      );
     })();
   }, []);
 
   return (
     <TouchableOpacity
+      onPress={() => {
+        navigation.navigate("ChatRoom", { chatRoomId: id });
+      }}
       style={[
         styles.container,
         index % 2 ? null : { backgroundColor: colors.lightGray },
