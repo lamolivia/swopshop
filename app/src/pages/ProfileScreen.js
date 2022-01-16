@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   SafeAreaView,
   View,
@@ -10,6 +10,7 @@ import {
   Dimensions,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import SwopApi from "../apis/SwopAPI";
 
 const { width, height } = Dimensions.get("window");
 
@@ -31,6 +32,13 @@ const user = {
 
 const ProfileScreen = ({ navigation }) => {
   const stars = [];
+  const [products, setProducts] = useState([]);
+  
+  useEffect(async () => {
+    const response = await SwopApi.getUserProducts(0);
+    setProducts(response);
+  }, []);
+
   for (let i = 0; i < 5; i++) {
     let colour = i < user.rating ? "black" : "grey";
     stars.push(<Ionicons key={i} name="star" size={14} color={colour} />);
@@ -73,23 +81,23 @@ const ProfileScreen = ({ navigation }) => {
       </View>
 
       <ScrollView>
-        <View style={styles.view2}>{displayImages(navigation)}</View>
+        <View style={styles.view2}>{displayImages(navigation, products)}</View>
       </ScrollView>
       
     </SafeAreaView>
   );
 };
 
-const displayImages = (navigation) => {
-  return user.products.map(({ image, id }) => (
+const displayImages = (navigation, products) => {
+  return products.map((image) => (
     <TouchableOpacity
-      key={id}
+      key={image}
       onPress={() => {
         navigation.navigate("ImageDisplay", { user: user.name, image: image, title: "hello", price: "100"});
       }}
     >
       <View style={styles.image_view}>
-        <Image style={styles.image} source={image} />
+        <Image style={styles.image} source={{uri:image}} />
       </View>
     </TouchableOpacity>
   ));
