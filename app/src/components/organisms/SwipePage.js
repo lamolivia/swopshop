@@ -86,8 +86,8 @@ function SwipePage({}){
 
     </View>
 
-    {lastDirection ? <Text style={styles.notif}>You swiped {lastDirection} !</Text> : <Text style={styles.notif}/>}
-
+    {lastDirection ? <Text style={styles.notif}>You swiped {lastDirection}</Text> : <Text style={styles.notif}/>}
+    
     {/* <Footer></Footer> */}
       
 		</SafeAreaView>
@@ -98,7 +98,7 @@ const styles = StyleSheet.create({
 
   cardContainer: {
     marginLeft: 40,
-    marginTop: 35,
+    marginTop: 0,
   },
 
   card: {
@@ -134,11 +134,12 @@ const styles = StyleSheet.create({
   },
 
   notif: {
-    bottom: 35,
+    bottom: -470,
     flexDirection: 'row',
     alignItems: 'center',
     marginLeft: '35%',
-    fontWeight: 'bold'
+    fontWeight: 'bold',
+    fontSize: 15
   }
 
 });
