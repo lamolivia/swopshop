@@ -22,7 +22,7 @@ class Graph:
 		user_data = self.db.collection('users').document(user_id)
 		user_data = user_data.get()
 		if not user_data.exists:
-			print("here")
+			#print("here")
 			return []
 		
 		user_products = user_data.to_dict().get('products', [])
@@ -35,7 +35,7 @@ class Graph:
 			self.visited = {p : Process.UNDER_PROCESSING}
 			self.visited_users = {user_data.id : Process.UNDER_PROCESSING}
 			self.result = [p]
-			print(f"Starting Dfs from product {p}")
+			#print(f"Starting Dfs from product {p}")
 			res = self._dfs(product_id=product_id)
 			if res:
 				return self.result
@@ -43,16 +43,16 @@ class Graph:
 		return self.result if len(self.result) > 1 else []
 
 	def _dfs(self, product_id):
-		print(f"dfs with id {product_id}")
+		#print(f"dfs with id {product_id}")
 		visited = self.visited.get(product_id, Process.NOT_PROCESSED)
 		if visited == Process.UNDER_PROCESSING:
-			print(f"exiting id {product_id} because of visited")
-			print(f"{self.initial_product_id}, {product_id}")
+			#print(f"exiting id {product_id} because of visited")
+			#print(f"{self.initial_product_id}, {product_id}")
 			if self.initial_product_id == product_id:
 				return True
 			return False
 		if visited == Process.PROCESSED:
-			print(f"exiting id {product_id}")
+			#print(f"exiting id {product_id}")
 			return False
 
 		user_id = self._get_user_id(product_id=product_id)
@@ -65,14 +65,14 @@ class Graph:
 		self.result.append(product_id)
 		for n in self._neighbours(product_id=product_id):
 			if self._dfs(product_id=n):
-				print(f"exiting id {product_id}")
+				#print(f"exiting id {product_id}")
 				return True
 
 		# mark as processed	
 		self.visited[product_id] = Process.PROCESSED
 		self.visited_users[user_id] = Process.NOT_PROCESSED
 		self.result.pop()
-		print(f"exiting id {product_id}")
+		#print(f"exiting id {product_id}")
 		return False
 
 	def _get_user_id(self, product_id: str):
