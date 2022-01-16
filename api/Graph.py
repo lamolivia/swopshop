@@ -74,8 +74,9 @@ class Graph:
 		return user.get('want', [])
 
 	def destory_cycle(self, path):
+		path.copy()
 		path.append(path[0])
-		self.destory_path(path)
+		self.destroy_path(path)
 
 
 	def destroy_path(self, path):
@@ -99,7 +100,7 @@ class Graph:
 		wants.remove(prod_id_to_delete)
 		user.update({"want" : wants})
 
-		self.destory_path(path[1:])
+		self.destroy_path(path[1:])
 
 
 

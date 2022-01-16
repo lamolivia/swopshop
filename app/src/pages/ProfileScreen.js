@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   SafeAreaView,
   View,
@@ -10,30 +10,24 @@ import {
   Dimensions,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import SwopApi from "../apis/SwopAPI";
+import { useGlobalContext } from "../utils/context";
 
 const { width, height } = Dimensions.get("window");
 
-const user = {
-  name: "mason_wong",
-  images: [
-    { image: require("../../assets/macbook.jpg"), id: 1 },
-    { image: require("../../assets/macbook.jpg"), id: 2 },
-    { image: require("../../assets/macbook.jpg"), id: 3 },
-    { image: require("../../assets/macbook.jpg"), id: 4 },
-    { image: require("../../assets/macbook.jpg"), id: 5 },
-    { image: require("../../assets/macbook.jpg"), id: 6 },
-    { image: require("../../assets/macbook.jpg"), id: 7 },
-    { image: require("../../assets/macbook.jpg"), id: 8 },
-  ],
-  rating: 4,
-  location: "Vancouver, Canada",
-};
-
 const ProfileScreen = ({ navigation }) => {
   const stars = [];
+  const [products, setProducts] = useState([]);
+  
+  const { curUser} = useGlobalContext();
+  useEffect(async () => {
+    const response = await SwopApi.getUserProducts(curUser);
+    setProducts(response);
+  }, []);
+
   for (let i = 0; i < 5; i++) {
-    let colour = i < user.rating ? "black" : "grey";
-    stars.push(<Ionicons name="star" size={14} color={colour} />);
+    let colour = i < curUser.rating ? "black" : "grey";
+    stars.push(<Ionicons key={i} name="star" size={14} color={colour} />);
   }
 
   return (
@@ -54,7 +48,7 @@ const ProfileScreen = ({ navigation }) => {
           </TouchableOpacity>
         </View>
 
-        <Text style={styles.text}>@{user.name}</Text>
+        <Text style={styles.text}>@{curUser.username}</Text>
 
         <View style={styles.star_view}>{stars}</View>
 
@@ -62,33 +56,34 @@ const ProfileScreen = ({ navigation }) => {
           <View style={{ flexDirection: "row" }}>
             <Ionicons name="location" size={14} color="black" />
             <Text style={({ fontSize: 17 }, { fontWeight: "bold" })}>
-              {user.location}
+              {curUser.location}
             </Text>
           </View>
 
           <Text style={({ fontSize: 17 }, { fontWeight: "bold" })}>
-            {user.images.length} items
+            {products.length} items
           </Text>
         </View>
       </View>
 
       <ScrollView>
-        <View style={styles.view2}>{displayImages(navigation)}</View>
+        <View style={styles.view2}>{displayImages(navigation, products)}</View>
       </ScrollView>
+      
     </SafeAreaView>
   );
 };
 
-const displayImages = (navigation) => {
-  return user.images.map(({ image, id }) => (
+const displayImages = (navigation, products) => {
+  return products.map(({image, product_id}) => (
     <TouchableOpacity
-      key={id}
+      key={product_id}
       onPress={() => {
-        navigation.navigate("ImageDisplay", { user: user.name, image: image });
+        navigation.navigate("ImageDisplay", { user: user.name, image: image, title: "hello", price: "100"});
       }}
     >
-      <View key={id} style={styles.image_view}>
-        <Image style={styles.image} source={image} />
+      <View style={styles.image_view}>
+        <Image style={styles.image} source={{uri:image}} />
       </View>
     </TouchableOpacity>
   ));
@@ -105,7 +100,7 @@ const styles = StyleSheet.create({
     width: width / 3,
     height: width / 3,
     marginBottom: 2,
-    paddingHorizontal: 1,
+    paddingHorizontal: 1
   },
   image: {
     flex: 1,

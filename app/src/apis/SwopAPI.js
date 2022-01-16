@@ -34,6 +34,12 @@ class SwopApi {
     });
     return data.data
   }
+  static async getUserProducts(user_id) {
+    const data = await get("/get_products", {
+      params: {user_id: user_id},
+    });
+    return data.data;
+  }
 }
 
 export default SwopApi;
