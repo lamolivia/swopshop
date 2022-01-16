@@ -12,6 +12,7 @@ function SwipeScreen({}) {
 
   const [products, setProducts] = useState([]);
   const [lastDirection, setLastDirection] = useState();
+  const [degreeMatch, setDegreeMatch] = useState((0));
   const user_id = auth.currentUser.uid;
 
   const onShowPopup = () => {
@@ -25,7 +26,6 @@ function SwipeScreen({}) {
   // TODO: call when products.length is 0
   const getProducts = async () => {
     const data = await SwopApi.getSwipeProducts(user_id);
-    // console.log(data)
     setProducts(data);
   }
 
@@ -38,7 +38,7 @@ function SwipeScreen({}) {
       const data = await SwopApi.getRightSwiped(user_id, product_id)
       if (data.length > 0) {
         console.log('match')
-        // n = data.length;
+        setDegreeMatch(data.length);
         onShowPopup();
       }
     }
@@ -76,14 +76,14 @@ function SwipeScreen({}) {
         ))}
       </View>
 
-      {lastDirection ? (
+      {/* {lastDirection ? (
         <Text style={styles.notif}>You swiped {lastDirection}</Text>
       ) : (
         <Text style={styles.notif} />
-      )}
+      )} */}
 
     <Match
-      // matchDegree={n}
+      matchDegree={degreeMatch}
       ref={(target) => popupRef = target}
       onTouchOutside = {onClosePopup}
       />
@@ -122,7 +122,7 @@ const styles = StyleSheet.create({
   },
 
   image: {
-    height: 450,
+    height: 600,
     width: 300,
     borderRadius: 20,
     overflow: "hidden",
