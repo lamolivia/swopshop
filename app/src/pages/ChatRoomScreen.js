@@ -7,7 +7,7 @@ import {
   query,
   Timestamp,
 } from "firebase/firestore";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import {
   Keyboard,
   KeyboardAvoidingView,
@@ -27,6 +27,7 @@ import headers from "../styles/headers";
 
 const ChatRoomScreen = ({ route }) => {
   const { chatRoomId } = route.params;
+  const scrollViewRef = useRef();
 
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState();
@@ -61,10 +62,9 @@ const ChatRoomScreen = ({ route }) => {
     <SafeAreaView style={styles.container}>
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "height"}
-        style={[
-          styles.flexMax,
-          { justifyContent: "space-between", flexGrow: 1 },
-        ]}
+        style={
+          { justifyContent: "space-between", flexGrow: 1 }
+        }
       >
         <TouchableWithoutFeedback
           onPress={Keyboard.dismiss}
@@ -74,6 +74,8 @@ const ChatRoomScreen = ({ route }) => {
             <Text style={headers.h2}>MacBook Air</Text>
           </View>
           <ScrollView
+            ref={scrollViewRef}
+            onContentSizeChange={() => scrollViewRef.current.scrollToEnd({ animated: true })}
             style={{zIndex: 0, height: '80%', backgroundColor: "white", flexGrow: 1, top: 5}}
           >
             {messages.map(({ id, data }) =>
