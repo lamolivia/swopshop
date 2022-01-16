@@ -29,7 +29,9 @@ const AppProvider = ({ children }) => {
   }, []);
 
   return (
-    <AppContext.Provider value={{ curUser }}>{children}</AppContext.Provider>
+    <AppContext.Provider value={{ curUser, setCurUser }}>
+      {children}
+    </AppContext.Provider>
   );
 };
 
