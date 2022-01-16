@@ -5,6 +5,8 @@ import firebase_admin
 from firebase_admin import credentials, firestore
 import os
 
+from Graph import Graph
+
 app = FastAPI()
 
 # Firebase initialization
@@ -48,3 +50,32 @@ async def get_user(user_id: str):
     else:
         print("No such document!")
         return "Error"
+
+@app.post("/swipe_right")
+async def get_user(user_id: str, product_id: str):
+    user = db.collection('users').document(user_id)
+    user_data = user.get()
+
+    if not user_data.exists:
+        return []
+    
+    user_data = user_data.to_dict()
+    if product_id in user_data.get('products', []):
+        #cant swipe right on your own product
+        return []
+    
+    want_list = user_data.get('want_list', [])
+    want_list.append(product_id)
+    user.update({"want": want_list})
+
+    g = Graph(db)
+    res = g.contains_cycle(product_id=product_id)
+
+    g.destory_cycle(res)
+    return res
+
+@app.get("/test_dfs")
+async def test_dfs(product_id: str):
+
+    g = Graph(db)
+    return g.contains_cycle(product_id=product_id)

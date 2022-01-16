@@ -11,6 +11,9 @@ import colors from "../styles/colors";
 import TestProfileScreen from "../pages/TestProfileScreen";
 import TestSwipeScreen from "../pages/TestSwipeScreen";
 import TestChatScreen from "../pages/TestChatScreen";
+import ProfileScreen from "../pages/ProfileScreen";
+import SettingScreen from "../pages/SettingsScreen";
+import SwipePage from "../components/organisms/SwipePage";
 
 const Stack = createStackNavigator();
 const Tab = createMaterialBottomTabNavigator();
@@ -35,6 +38,11 @@ const Navigation = () => {
           options={{ animationEnabled: false }}
         />
         <Stack.Screen name="Home" component={TabNavigator} />
+      <Stack.Screen
+          name="SettingScreen"
+          component={SettingScreen}
+          options={{ animationEnabled: true }}
+      />
       </Stack.Navigator>
     </NavigationContainer>
   );
@@ -60,7 +68,7 @@ const TabNavigator = () => {
     >
       <Tab.Screen
         name="Profile"
-        component={TestProfileScreen}
+        component={ProfileScreen}
         options={{
           tabBarIcon: ({ color }) => (
             <FontAwesome5 name="user" solid color={color} size={22} />
@@ -69,7 +77,7 @@ const TabNavigator = () => {
       />
       <Tab.Screen
         name="Swipe"
-        component={TestSwipeScreen}
+        component={SwipePage}
         options={{
           tabBarIcon: ({ color }) => (
             <FontAwesome5 name="sync-alt" solid color={color} size={22} />
