@@ -15,6 +15,7 @@ import SwipeScreen from "../pages/SwipeScreen";
 import CameraScreen from "../pages/CameraScreen";
 import ImageDisplayScreen from "../pages/ImageDisplayScreen";
 import SplashScreen from "../pages/SplashScreen";
+import ChatRoomsScreen from "../pages/ChatRoomsScreen";
 
 const Stack = createStackNavigator();
 const Tab = createMaterialBottomTabNavigator();
@@ -102,7 +103,7 @@ const TabNavigator = () => {
       />
       <Tab.Screen
         name="Chat"
-        component={TestChatScreen}
+        component={ChatRoomsScreen}
         options={{
           tabBarIcon: ({ color }) => (
             <FontAwesome5 name="comments" solid color={color} size={22} />

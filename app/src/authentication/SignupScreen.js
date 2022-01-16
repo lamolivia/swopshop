@@ -69,12 +69,10 @@ const SignupScreen = ({ navigation }) => {
         setDoc(doc(db, "users", cred.user.uid), {
           dateCreated: Timestamp.fromDate(new Date()),
           location: "Vancouver, Canada",
-          products: [
-            { image: require("../../assets/macbook.jpg"), id: 1 },
-            { image: require("../../assets/macbook.jpg"), id: 2 },
-          ],
+          products: [],
           rating: Math.floor(Math.random() * 6),
           username,
+          want: [],
         });
       })
       .then(() => navigation.navigate("Home"))
