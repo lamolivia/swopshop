@@ -36,7 +36,7 @@ class Graph:
 			print(f"Starting Dfs from product {p}")
 			self._dfs(product_id=product_id)
 
-		return self.result
+		return self.result if len(self.result) > 1 else []
 
 	def _dfs(self, product_id):
 		print(f"dfs with id {product_id}")
