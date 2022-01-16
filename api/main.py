@@ -70,7 +70,7 @@ async def get_user(user_id: str, product_id: str):
 
     g = Graph(db)
     res = g.contains_cycle(product_id=product_id)
-
+    print(res)
     g.destory_cycle(res)
     return res
 
