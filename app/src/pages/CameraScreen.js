@@ -15,7 +15,7 @@ const CameraScreen = ({ navigation, route }) => {
   const {setCurUser, curUser} = useGlobalContext();
   const cameraRef = useRef(null);
 
-  const { get_all_products } = route.params;
+  const { setImage } = route.params;
 
   useEffect(() => {
     (async () => {
@@ -51,13 +51,7 @@ const CameraScreen = ({ navigation, route }) => {
           return getDownloadURL(ref(storage, image_name));
         })
         .then((image_link) => {
-          console.log(image_link);
-          console.log(image_name);
-          return SwopApi.addUserProduct(user_id, image_link, image_name, "12345.00");
-        })
-        .then((data) => {
-          console.log("third then");
-          get_all_products();
+          return setImage(image_link);
         })
         .catch((error) => {
           console.log(error);
