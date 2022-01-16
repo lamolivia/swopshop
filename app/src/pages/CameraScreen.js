@@ -27,7 +27,7 @@ const CameraScreen = ({ navigation, route }) => {
     const response = await fetch(selfie);
     const blob = await response.blob();
 
-    storageRef = ref(getStorage(), `products/${image_name}`);
+    const storageRef = ref(getStorage(), `products/${image_name}`);
     uploadBytes(storageRef, blob).then((snapshot) => {
       console.log("Uploaded a blob or file!");
     });
@@ -43,7 +43,7 @@ const CameraScreen = ({ navigation, route }) => {
         .then((new_image) => {
           console.log("Great Sucess.");
           image_name = `products/${new_image}`;
-          return new Promise((r) => setTimeout(r, 8000));
+          return new Promise((r) => setTimeout(r, 5000));
         })
         .then(() => getDownloadURL(ref(storage, image_name)))
         .then((image_link) => setImage(image_link))
