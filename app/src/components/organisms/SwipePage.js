@@ -16,32 +16,32 @@ const db = [
   {
    id: 1,
    url: 'https://picsum.photos/id/0/200/300',
-   desc: 'Macbook Air, Priced at: $200'
+   desc: 'Item, Priced at: $200'
   },
  
   {
    id: 2,
    url: 'https://picsum.photos/id/157/200/300',
-   desc: 'Men\'s Accessory Kit, Priced at: $75',
+   desc: 'Item, Priced at: $75',
   },
  
   {
  
    id: 3,
    url: 'https://picsum.photos/id/250/200/300',
-   desc: 'Polaroid Camera Year 1999, Priced at $118'
+   desc: 'Item, Priced at $118'
   },
  
   {
    id: 4,
    url: 'https://picsum.photos/id/26/200/300',
-   desc: 'Pennyboard (barely used), Priced at $60'
+   desc: 'Item, Priced at $60'
   },
 
   {
     id: 5,
     url: 'https://picsum.photos/id/370/200/300',
-    desc: 'Macbook Pro, Priced at $500'
+    desc: 'Item, Priced at $500'
   }
  
  ];

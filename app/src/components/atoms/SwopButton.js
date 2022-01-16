@@ -1,25 +1,30 @@
-import React from 'react'
-import { Button, StyleSheet, Text, View } from 'react-native'
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import React from "react";
+import { StyleSheet, Text, TouchableOpacity } from "react-native";
+import colors from "../../styles/colors";
+import headers from "../../styles/headers";
 
-const SwopButton = ({title, onPress}) => {
-	return (
-		<TouchableOpacity onPress={()=>{onPress()}} style={styles.button}>
-			<View style={{alignItems: "center", flex: 1, justifyContent: "center", width: "100%", height: "100%"}}>
-				<Text style={{color: "white", fontSize: 20}}>{title}</Text>
-			</View>
-		</TouchableOpacity>
-	);
-}
+const SwopButton = ({ title, onPress, disabled }) => {
+  return (
+    <TouchableOpacity
+      style={[styles.submit, disabled ? styles.disabled : null]}
+      onPress={onPress}
+      disabled={disabled}
+    >
+      <Text style={[headers.p, styles.submitTxt]}>{title}</Text>
+    </TouchableOpacity>
+  );
+};
 
 const styles = StyleSheet.create({
-	button: {
-		width: 250,
-		height: 50,
-		backgroundColor: "#155A81",
-		borderRadius: 30
-	}
+  submit: {
+    marginTop: "auto",
+    marginBottom: 10,
+    paddingVertical: 10,
+    borderRadius: 25,
+    backgroundColor: colors.primary,
+  },
+  disabled: { backgroundColor: colors.lightGray },
+  submitTxt: { textAlign: "center", color: "white" },
 });
-
 
 export default SwopButton;
