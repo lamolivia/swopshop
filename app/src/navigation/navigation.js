@@ -85,6 +85,7 @@ const TabNavigator = () => {
         position: "absolute",
         left: "50%",
         marginLeft: -175,
+        height: 55,
         width: 350,
         bottom: 10,
         overflow: "hidden",

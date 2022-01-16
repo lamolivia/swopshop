@@ -27,7 +27,7 @@ import { FontAwesome5 } from "@expo/vector-icons";
 import headers from "../styles/headers";
 
 const ChatRoomScreen = ({ route }) => {
-  const { chatRoomId, product } = route.params;
+  const { chatRoomId, product, friend } = route.params;
   const scrollViewRef = useRef();
 
   const [messages, setMessages] = useState([]);
@@ -68,8 +68,30 @@ const ChatRoomScreen = ({ route }) => {
           onPress={Keyboard.dismiss}
           style={(styles.flexMax, { backgroundColor: "white", flexGrow: 1 })}
         >
-          <View>
-            <Text style={headers.h2}>{product.name}</Text>
+          <View style={styles.header}>
+            <View style={{ flexDirection: "row", alignItems: "center" }}>
+              <FontAwesome5 name="chevron-left" size={22} color="black" />
+              <View style={{ justifyContent: "space-between", marginLeft: 20 }}>
+                <Text style={[headers.h2, styles.prodName]}>
+                  {product.name}
+                </Text>
+                <Text style={[headers.p, styles.userame]}>
+                  @{friend.username}
+                </Text>
+              </View>
+            </View>
+            <View style={styles.descisionCont}>
+              <TouchableOpacity
+                style={[styles.descisionBtn, { backgroundColor: "#FF6961" }]}
+              >
+                <FontAwesome5 name="times" solid size={22} color="white" />
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[styles.descisionBtn, { backgroundColor: "#77dd77" }]}
+              >
+                <FontAwesome5 name="check" solid size={22} color="white" />
+              </TouchableOpacity>
+            </View>
           </View>
           <ScrollView
             ref={scrollViewRef}
@@ -81,9 +103,10 @@ const ChatRoomScreen = ({ route }) => {
             // automaticallyAdjustContentInsets={false}
             style={{
               // zIndex: 0,
-              height: Dimensions.get("window").height - 125,
+              height: Dimensions.get("window").height - 150,
               //   flex: 1,
-              //   backgroundColor: "white",
+              paddingHorizontal: 10,
+              backgroundColor: "#f0f0f0",
               flexGrow: 0,
             }}
           >
@@ -136,8 +159,28 @@ const ChatRoomScreen = ({ route }) => {
 export default ChatRoomScreen;
 
 const styles = StyleSheet.create({
-  container: { flex: 1, marginHorizontal: 10 },
+  container: { flex: 1 },
   flexMax: { height: "100%" },
+  header: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    marginHorizontal: 10,
+    borderBottomLeftRadius: 20,
+    borderBottomRightRadius: 20,
+    borderRadius: 20,
+  },
+  username: { marginBottom: 10 },
+  descisionCont: { flexDirection: "row" },
+  descisionBtn: {
+    height: 50,
+    width: 50,
+    borderRadius: 10,
+    marginLeft: 10,
+    marginBottom: 10,
+    alignItems: "center",
+    justifyContent: "center",
+  },
   sender: {
     padding: 10,
     backgroundColor: colors.primary,
@@ -170,6 +213,7 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     paddingHorizontal: 20,
     zIndex: 3,
+    marginHorizontal: 10,
   },
   textInput: { flex: 1 },
 });

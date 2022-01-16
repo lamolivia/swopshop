@@ -13,6 +13,9 @@ import { Ionicons } from "@expo/vector-icons";
 import SwopApi from "../apis/SwopAPI";
 import { useGlobalContext } from "../utils/context";
 import { auth } from "../utils/firebase";
+import colors from "../styles/colors";
+import headers from "../styles/headers";
+import { FontAwesome5 } from "@expo/vector-icons";
 
 const { width, height } = Dimensions.get("window");
 
@@ -34,7 +37,7 @@ const ProfileScreen = ({ navigation }) => {
 
   for (let i = 0; i < 5; i++) {
     let colour = i < curUser.rating ? "black" : "grey";
-    stars.push(<Ionicons key={i} name="star" size={14} color={colour} />);
+    stars.push(<Ionicons key={i} name="star" size={16} color={colour} />);
   }
 
   return (
@@ -49,6 +52,7 @@ const ProfileScreen = ({ navigation }) => {
           >
             <Ionicons name="add-circle-sharp" size={30} color="black" />
           </TouchableOpacity>
+          <Text style={[headers.h1, styles.text]}>@{curUser.username}</Text>
           <TouchableOpacity
             style={styles.settings_icon}
             onPress={() => navigation.navigate("Settings")}
@@ -56,22 +60,17 @@ const ProfileScreen = ({ navigation }) => {
             <Ionicons name="settings-sharp" size={30} color="black" />
           </TouchableOpacity>
         </View>
-
-        <Text style={styles.text}>@{curUser.username}</Text>
-
         <View style={styles.star_view}>{stars}</View>
 
         <View style={styles.view3}>
-          <View style={{ flexDirection: "row" }}>
-            <Ionicons name="location" size={14} color="black" />
-            <Text style={({ fontSize: 17 }, { fontWeight: "bold" })}>
+          <View style={{ flexDirection: "row", alignItems: "center" }}>
+            <FontAwesome5 name="map-marker-alt" solid size={17} color="black" />
+            <Text style={[headers.p, { marginLeft: 5 }]}>
               {curUser.location}
             </Text>
           </View>
 
-          <Text style={({ fontSize: 17 }, { fontWeight: "bold" })}>
-            {products.length} items
-          </Text>
+          <Text style={headers.p}>{products.length} items</Text>
         </View>
       </View>
 
@@ -107,9 +106,7 @@ const displayImages = (navigation, products, curUser) => {
 const styles = StyleSheet.create({
   text: {
     textAlign: "center",
-    fontWeight: "bold",
-    color: "grey",
-    fontSize: 17,
+    color: colors.darkGray,
   },
   image_view: {
     width: width / 3,
@@ -136,6 +133,7 @@ const styles = StyleSheet.create({
   header_icons: {
     flexDirection: "row",
     justifyContent: "space-between",
+    alignItems: "center",
   },
   headingView: {
     marginHorizontal: 10,
@@ -143,12 +141,13 @@ const styles = StyleSheet.create({
   },
   view3: {
     flexDirection: "row",
-    justifyContent: "space-between",
+    justifyContent: "space-around",
   },
   star_view: {
     flexDirection: "row",
     justifyContent: "center",
     paddingVertical: 3,
+    marginBottom: 15,
   },
 });
 

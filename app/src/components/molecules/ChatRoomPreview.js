@@ -29,11 +29,17 @@ const ChatRoomPreview = ({ id, buyerId, sellerId, productId, index }) => {
   return (
     <TouchableOpacity
       onPress={() => {
-        navigation.navigate("ChatRoom", { chatRoomId: id, product });
+        navigation.navigate("ChatRoom", {
+          chatRoomId: id,
+          product,
+          friend: selling ? buyer : seller,
+        });
       }}
       style={[
         styles.container,
-        index % 2 ? null : { backgroundColor: colors.lightGray },
+        index % 2
+          ? null
+          : { backgroundColor: colors.lightGray, borderRadius: 10 },
       ]}
     >
       <Image
@@ -44,7 +50,7 @@ const ChatRoomPreview = ({ id, buyerId, sellerId, productId, index }) => {
       />
       <View style={styles.rightContainer}>
         <View style={styles.top}>
-          <Text style={[headers.p, styles.productName]}>MacBook Air</Text>
+          <Text style={[headers.p, styles.productName]}>{product?.name}</Text>
           <View
             style={[
               styles.tradeIcon,
@@ -75,7 +81,12 @@ const styles = StyleSheet.create({
     marginRight: 10,
   },
   rightContainer: { justifyContent: "space-between" },
-  top: { flexDirection: "row", alignItems: "center" },
+  top: {
+    flex: 1,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+  },
   productName: { marginRight: 10 },
   tradeIcon: {
     paddingHorizontal: 7,
