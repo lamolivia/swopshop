@@ -13,7 +13,7 @@ function SwipeScreen({}) {
   const [products, setProducts] = useState([]);
   const [lastDirection, setLastDirection] = useState();
   const user_id = auth.currentUser.uid;
-  let n = 0;
+  // let n = 0;
 
   const onShowPopup = () => {
     popupRef.show()
@@ -39,7 +39,7 @@ function SwipeScreen({}) {
       const data = await SwopApi.getRightSwiped(user_id, product_id)
       if (data.length > 0) {
         console.log('match')
-        n = data.length;
+        // n = data.length;
         onShowPopup();
       }
     }
@@ -85,7 +85,7 @@ function SwipeScreen({}) {
       )}
 
     <Match
-      matchDegree={n}
+      // matchDegree={n}
       ref={(target) => popupRef = target}
       onTouchOutside = {onClosePopup}
       />

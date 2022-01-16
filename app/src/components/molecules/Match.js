@@ -64,7 +64,7 @@ export class Match extends React.Component {
                 <View style={{height: '50%', backgroundColor: 'white', justifyContent: 'center', alignItems: 'center'}}>
 
                     <Image style={{height: 200, width: 300}} source={require('../../../assets/match_splash.png')}/> 
-                    <Text style={{marginTop: 20}}>You have a {n}-way match</Text>
+                    <Text style={{marginTop: 20}}>You have a {matchDegree}-way match</Text>
                     
                 </View>
 
