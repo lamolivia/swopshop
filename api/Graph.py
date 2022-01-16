@@ -15,12 +15,27 @@ class Graph:
 		self.visited = {}
 		self.initial_product_id = ""
 
-	def contains_cycle(self, product_id):
-		self.result = []
-		self.visited = {}
-		self.initial_product_id = product_id
+	def contains_cycle(self, product_id: str, user_id: str):
 
-		self._dfs(product_id=product_id)
+		# get all products of the user
+		user_data = self.db.collection('users').document(user_id)
+		user_data = user_data.get()
+		if not user_data.exists:
+			print("here")
+			return []
+		
+		user_products = user_data.to_dict().get('products', [])
+
+		for p in user_products:
+			# we start dfs at the current users products.
+			# we add it to visited/result and then we only need to look 
+			# at one neighbor (the one to which we added the new edge)
+			self.initial_product_id = p
+			self.visited = {p : Process.UNDER_PROCESSING}
+			self.result = [p]
+			print(f"Starting Dfs from product {p}")
+			self._dfs(product_id=product_id)
+
 		return self.result
 
 	def _dfs(self, product_id):
@@ -51,7 +66,7 @@ class Graph:
 
 	def _get_user(self, product_id: str):
 
-		products = self.db.collection('product').document(product_id)
+		products = self.db.collection('products').document(product_id)
 		products = products.get()
 		if not products.exists:
 			return []
@@ -74,8 +89,11 @@ class Graph:
 		return user.get('want', [])
 
 	def destory_cycle(self, path):
+		if len(path) <= 1:
+			return
+		path = path.copy()
 		path.append(path[0])
-		self.destory_path(path)
+		self.destroy_path(path)
 
 
 	def destroy_path(self, path):
@@ -99,7 +117,7 @@ class Graph:
 		wants.remove(prod_id_to_delete)
 		user.update({"want" : wants})
 
-		self.destory_path(path[1:])
+		self.destroy_path(path[1:])
 
 
 

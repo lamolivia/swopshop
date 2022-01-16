@@ -3,11 +3,16 @@ import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import { Camera } from "expo-camera";
 import { useGlobalContext } from "../utils/context";
 import * as ImageManipulator from "expo-image-manipulator";
+import { getStorage, ref, uploadBytes } from "firebase/storage";
+import uuid from 'react-native-uuid';
+import SwopApi from "../apis/SwopAPI";
+import { auth } from "../utils/firebase";
 
 const CameraScreen = ({ navigation }) => {
   const [hasPermission, setHasPermission] = useState();
   const [selfie, setSelfie] = useState();
-
+  const user_id = auth.currentUser.uid;
+  
   const cameraRef = useRef(null);
 
   useEffect(() => {
@@ -17,10 +22,34 @@ const CameraScreen = ({ navigation }) => {
     })();
   }, []);
 
+  const uploadImage = async(selfie) => {
+    const image_name = `${uuid.v4()}.png`
+    const response = await fetch(selfie);
+    const blob = await response.blob();
+
+    storageRef = ref(getStorage(), `products/${image_name}`);
+    uploadBytes(storageRef, blob).then((snapshot) => {
+      console.log('Uploaded a blob or file!');
+    });
+
+    return image_name;
+  }
+
   useEffect(() => {
     if (selfie) {
-      //   What to do after taking photo
-      console.log("Image Taken");
+      //   What to do after taking photo     
+      uploadImage(selfie)
+        .then((image_name) => {
+          console.log("Great Sucess.");
+
+          return SwopApi.addUserProduct(user_id, image_name, image_name, "12345.00");
+        })
+        .then((data) => {
+          console.log("uploaded to database");
+        })
+        .catch((error) => {
+          console.log("Error")
+        });
     }
   }, [selfie]);
 
@@ -33,7 +62,7 @@ const CameraScreen = ({ navigation }) => {
           // Flip photo horizontally so displayed photo in same orientation as preview
           ImageManipulator.manipulateAsync(photo.uri, [
             { flip: ImageManipulator.FlipType.Horizontal },
-          ])
+          ], {compress: 0.1})
         )
         .then((flipPhoto) => {
           setSelfie(flipPhoto.uri);
