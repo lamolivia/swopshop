@@ -106,7 +106,7 @@ async def swipe_right(user_id: str, product_id: str) -> List[str]:
         #cant swipe right on your own product
         return []
     
-    want_list = user_data.get('want_list', [])
+    want_list = user_data.get('want', [])
     want_list.append(product_id)
     user.update({"want": want_list})
 
