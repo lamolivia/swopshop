@@ -30,12 +30,20 @@ const ProfileScreen = ({ navigation }) => {
     return (
         <SafeAreaView>
             <View style={styles.headingView}>
-                <TouchableOpacity 
-                    style={styles.settings_icon}
-                    onPress={() => navigation.navigate("SettingScreen")}
-                >
-                    <Ionicons name="settings-sharp" size={30} color="black" />
-                </TouchableOpacity>
+                <View style={styles.header_icons}>
+                    <TouchableOpacity 
+                        style={styles.settings_icon}
+                        onPress={() => navigation.navigate("Camera")}
+                    >
+                        <Ionicons name="add-circle-sharp" size={30} color="black" />
+                    </TouchableOpacity>
+                    <TouchableOpacity 
+                        style={styles.settings_icon}
+                        onPress={() => navigation.navigate("Settings")}
+                    >
+                        <Ionicons name="settings-sharp" size={30} color="black" />
+                    </TouchableOpacity>
+                </View>
 
                 <Text style={styles.text}>
                     @{user.name}
@@ -47,7 +55,7 @@ const ProfileScreen = ({ navigation }) => {
 
                 <View style={styles.view3}>
                     <View style={{flexDirection:'row'}}>
-                        <Ionicons style={styles.location_icon} name="location" size={14} color="black" />
+                        <Ionicons name="location" size={14} color="black" />
                         <Text style={{fontSize: 17}, {fontWeight: 'bold'}}>
                             {user.location}
                         </Text>
@@ -60,9 +68,8 @@ const ProfileScreen = ({ navigation }) => {
             </View>
             
             <ScrollView>
-                
                 <View style={styles.view2}> 
-                    {displayImages()}
+                    {displayImages(navigation)}
                 </View>
             </ScrollView>
             
@@ -70,22 +77,22 @@ const ProfileScreen = ({ navigation }) => {
     );
 };
 
-const displayImages = () => {
+const displayImages = (navigation) => {
     
-    return user.images.map((image, id) => {
+    return user.images.map(({image, id}) => {
         return (
-            <TouchableOpacity key={id} onPress={()=>{console.log("image pressed")}}>
-                <View style={styles.image_view }>
+            <TouchableOpacity key={id} onPress={() => {navigation.navigate("ImageDisplay", {user: user.name, image: image})}}>
+                <View key={id} style={styles.image_view }>
                     <Image 
                         style={styles.image}
-                        source={image.image}
+                        source={image}
                     />
                 </View>
             </TouchableOpacity>
             
         );
     });
-} ;
+};
 
 const styles = StyleSheet.create({
     text: {
@@ -116,8 +123,9 @@ const styles = StyleSheet.create({
     settings_icon: {
         alignSelf: "flex-end"
     },
-    location_icon: {
-        
+    header_icons: {
+        flexDirection: 'row',
+        justifyContent:'space-between'
     },
     headingView: {
         marginHorizontal: 10,
