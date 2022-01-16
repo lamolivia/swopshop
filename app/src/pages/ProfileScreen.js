@@ -19,10 +19,11 @@ const { width, height } = Dimensions.get("window");
 const ProfileScreen = ({ navigation }) => {
   const stars = [];
   const [products, setProducts] = useState([]);
+  const user_id = auth.currentUser.uid;
   
   const { curUser } = useGlobalContext();
   useEffect(async () => {
-    const response = await SwopApi.getUserProducts(auth.currentUser.uid);
+    const response = await SwopApi.getUserProducts(user_id);
     setProducts(response);
   }, []);
   console.log(curUser);

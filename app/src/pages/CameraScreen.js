@@ -11,8 +11,8 @@ import { auth } from "../utils/firebase";
 const CameraScreen = ({ navigation }) => {
   const [hasPermission, setHasPermission] = useState();
   const [selfie, setSelfie] = useState();
-  const { curUser } = useGlobalContext();
-
+  const user_id = auth.currentUser.uid;
+  
   const cameraRef = useRef(null);
 
   useEffect(() => {
@@ -42,7 +42,7 @@ const CameraScreen = ({ navigation }) => {
         .then((image_name) => {
           console.log("Great Sucess.");
 
-          return SwopApi.addUserProduct(auth.currentUser.uid, image_name, image_name, "12345.00");
+          return SwopApi.addUserProduct(user_id, image_name, image_name, "12345.00");
         })
         .then((data) => {
           console.log("uploaded to database");
