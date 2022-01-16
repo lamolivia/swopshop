@@ -93,8 +93,8 @@ async def add_product(user_id: str, image: str, product_name: str):
 @app.get("/get_swipe_products")
 async def swipe_products(user_id: str):
     return [
-        {"product_id": "", "title": "Hello", "price": "100", "image": "https://images.macrumors.com/t/ChPbcdmq7U5j6laUuR61rOjbh6g=/1600x0/article-new/2020/11/macbook-air-m1-unboxing.jpg"},
-    {"product_id": "", "title": "Hello", "price": "100", "image": "https://cdn.pocket-lint.com/r/s/970x/assets/images/148821-laptops-review-apple-macbook-air-2019-review-image1-rjq8dgayx5-jpg.webp"},
-    {"product_id": "", "title": "Hello", "price": "100", "image": "https://thermaltake.azureedge.net/pub/media/catalog/product/cache/6bf0ed99c663954fafc930039201ed07/x/f/xfit_black-white01.jpg"},
-    {"product_id": "", "title": "Hello", "price": "100", "image": "https://cdn.pocket-lint.com/r/s/970x/assets/images/148821-laptops-review-apple-macbook-air-2019-review-image1-rjq8dgayx5-jpg.webp"},
-    {"product_id": "", "title": "Hello", "price": "100", "image": "https://thermaltake.azureedge.net/pub/media/catalog/product/cache/6bf0ed99c663954fafc930039201ed07/x/f/xfit_black-white01.jpg"}]
+        {"product_id": "asdlkfjakfa", "title": "Hello1", "price": "100", "image": "https://images.macrumors.com/t/ChPbcdmq7U5j6laUuR61rOjbh6g=/1600x0/article-new/2020/11/macbook-air-m1-unboxing.jpg"},
+    {"product_id": "sdfafafj", "title": "Hello2", "price": "100", "image": "https://cdn.pocket-lint.com/r/s/970x/assets/images/148821-laptops-review-apple-macbook-air-2019-review-image1-rjq8dgayx5-jpg.webp"},
+    {"product_id": "asdfadsffaj", "title": "Hello3", "price": "100", "image": "https://thermaltake.azureedge.net/pub/media/catalog/product/cache/6bf0ed99c663954fafc930039201ed07/x/f/xfit_black-white01.jpg"},
+    {"product_id": "aldklewew", "title": "Hello4", "price": "100", "image": "https://cdn.pocket-lint.com/r/s/970x/assets/images/148821-laptops-review-apple-macbook-air-2019-review-image1-rjq8dgayx5-jpg.webp"},
+    {"product_id": "sdheihewhij", "title": "Hello5", "price": "100", "image": "https://thermaltake.azureedge.net/pub/media/catalog/product/cache/6bf0ed99c663954fafc930039201ed07/x/f/xfit_black-white01.jpg"}]
