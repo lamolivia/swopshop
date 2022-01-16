@@ -8,12 +8,10 @@ import { createStackNavigator } from "@react-navigation/stack";
 import SignupScreen from "../authentication/SignupScreen";
 import LoginScreen from "../authentication/LoginScreen";
 import colors from "../styles/colors";
-import TestProfileScreen from "../pages/TestProfileScreen";
-import TestSwipeScreen from "../pages/TestSwipeScreen";
 import TestChatScreen from "../pages/TestChatScreen";
 import ProfileScreen from "../pages/ProfileScreen";
 import SettingScreen from "../pages/SettingsScreen";
-import SwipePage from "../components/organisms/SwipePage";
+import SwipeScreen from "../pages/SwipeScreen";
 import CameraScreen from "../pages/CameraScreen";
 import ImageDisplayScreen from "../pages/ImageDisplayScreen";
 
@@ -40,21 +38,21 @@ const Navigation = () => {
           options={{ animationEnabled: false }}
         />
         <Stack.Screen name="Home" component={TabNavigator} />
-      <Stack.Screen
+        <Stack.Screen
           name="Settings"
           component={SettingScreen}
           options={{ animationEnabled: true }}
-      />
-      <Stack.Screen
+        />
+        <Stack.Screen
           name="Camera"
           component={CameraScreen}
           options={{ animationEnabled: true }}
-      />
-      <Stack.Screen
+        />
+        <Stack.Screen
           name="ImageDisplay"
           component={ImageDisplayScreen}
           options={{ animationEnabled: true }}
-      />
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );
@@ -89,7 +87,7 @@ const TabNavigator = () => {
       />
       <Tab.Screen
         name="Swipe"
-        component={SwipePage}
+        component={SwipeScreen}
         options={{
           tabBarIcon: ({ color }) => (
             <FontAwesome5 name="sync-alt" solid color={color} size={22} />

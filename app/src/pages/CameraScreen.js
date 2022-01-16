@@ -20,7 +20,7 @@ const CameraScreen = ({ navigation }) => {
   useEffect(() => {
     if (selfie) {
       //   What to do after taking photo
-      console.log("Image Taken")
+      console.log("Image Taken");
     }
   }, [selfie]);
 

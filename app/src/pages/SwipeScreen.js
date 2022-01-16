@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 
 import { SafeAreaView, StyleSheet, Text, View, Image } from "react-native";
 
-import SwipePageHeader from "../molecules/SwipePageHeader";
+import SwipePageHeader from "../components/molecules/SwipePageHeader";
 // TODO : need to document dependencies for this
 import TinderCard from "react-tinder-card";
 
