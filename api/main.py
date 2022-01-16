@@ -155,7 +155,7 @@ async def products(user_id: str) -> List[dict]:
     return res
 
 @app.get("/add_product")
-async def add_product(user_id: str, image: str, product_name: str, price: str, id: str):
+async def add_product(user_id: str, image: str, product_name: str, price: str):
     # get user stuff
     user = db.collection('users').document(user_id)
     user_data = user.get()
@@ -166,7 +166,7 @@ async def add_product(user_id: str, image: str, product_name: str, price: str, i
     new_products = user_data.to_dict().get('products', [])
 
     # create new product
-    product = db.collection('products').document(id)
+    product = db.collection('products').document()
     product.set({
         'user_id': user_id,
         'image': image,
