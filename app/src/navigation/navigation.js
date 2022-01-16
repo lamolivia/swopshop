@@ -67,7 +67,7 @@ const TabNavigator = () => {
     >
       <Tab.Screen
         name="Profile"
-        component={TestProfileScreen}
+        component={ProfileScreen}
         options={{
           tabBarIcon: ({ color }) => (
             <FontAwesome5 name="user" solid color={color} size={22} />
