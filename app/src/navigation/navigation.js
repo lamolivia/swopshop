@@ -1,14 +1,11 @@
 import React from "react";
-import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { FontAwesome5 } from "@expo/vector-icons";
-
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import SignupScreen from "../authentication/SignupScreen";
 import LoginScreen from "../authentication/LoginScreen";
 import colors from "../styles/colors";
-import TestChatScreen from "../pages/TestChatScreen";
 import ProfileScreen from "../pages/ProfileScreen";
 import SettingScreen from "../pages/SettingsScreen";
 import SwipeScreen from "../pages/SwipeScreen";

@@ -1,7 +1,6 @@
-import { setStatusBarNetworkActivityIndicatorVisible } from "expo-status-bar";
-import { collection, doc, getDoc } from "firebase/firestore";
+import { doc, getDoc } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
-import { StyleSheet, Text, SafeAreaView, View, Image } from "react-native";
+import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
 import colors from "../../styles/colors";
 import headers from "../../styles/headers";
 import { auth, db } from "../../utils/firebase";
@@ -16,41 +15,51 @@ const ChatRoomPreview = ({ id, buyerId, sellerId, productId, index }) => {
   useEffect(() => {
     (async () => {
       const buyerSnap = await getDoc(doc(db, "users", buyerId));
+      console.log("yurrr", productId);
       setBuyer(buyerSnap.data());
       const sellerSnap = await getDoc(doc(db, "users", sellerId));
       setSeller(sellerSnap.data());
-      const productSnap = await getDoc(doc(db, "product", productId));
+      const productSnap = await getDoc(doc(db, "products", productId));
       setProduct(productSnap.data());
-      console.log(buyerSnap.data(), sellerSnap.data(), productSnap.data());
+      console.log(
+        "yayaay",
+        buyerSnap.data(),
+        sellerSnap.data(),
+        productSnap.data()
+      );
     })();
   }, []);
 
   return (
-    <View
+    <TouchableOpacity
       style={[
         styles.container,
         index % 2 ? null : { backgroundColor: colors.lightGray },
       ]}
     >
       <Image
+        source={{
+          uri: product?.image,
+        }}
         style={styles.img}
-        source={require("../../../assets/macbook.jpg")}
       />
-      <View style={{ flexDirection: "row" }}>
-        <Text style={[headers.p]}>MacBook Air</Text>
-        <View
-          style={[
-            styles.tradeIcon,
-            { backgroundColor: selling ? "green" : "red" },
-          ]}
-        >
-          <Text style={{ color: "white" }}>
-            {selling ? "Selling" : "Buying"}
-          </Text>
+      <View style={styles.rightContainer}>
+        <View style={styles.top}>
+          <Text style={[headers.p, styles.productName]}>MacBook Air</Text>
+          <View
+            style={[
+              styles.tradeIcon,
+              { backgroundColor: selling ? "green" : "red" },
+            ]}
+          >
+            <Text style={{ color: "white" }}>
+              {selling ? "Selling" : "Buying"}
+            </Text>
+          </View>
         </View>
+        <Text>Ok deal</Text>
       </View>
-      <Text>Ok deal</Text>
-    </View>
+    </TouchableOpacity>
   );
 };
 
@@ -58,19 +67,21 @@ const styles = StyleSheet.create({
   container: {
     width: "100%",
     flexDirection: "row",
+    padding: 10,
   },
   img: {
     height: 50,
     width: 50,
     borderRadius: 25,
-    margin: 10,
+    marginRight: 10,
   },
+  rightContainer: { justifyContent: "space-between" },
+  top: { flexDirection: "row", alignItems: "center" },
+  productName: { marginRight: 10 },
   tradeIcon: {
-    width: 15,
-    height: 10,
-    borderRadius: 10,
-    bottom: -45,
-    alignItems: "center",
+    paddingHorizontal: 7,
+    paddingVertical: 3,
+    borderRadius: 15,
   },
 });
 

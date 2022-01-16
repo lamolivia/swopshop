@@ -1,8 +1,11 @@
 import { collection, getDocs, query, where } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
-import { StyleSheet, TouchableOpacity, View } from "react-native";
+import { StyleSheet, SafeAreaView, View, Text, ScrollView } from "react-native";
 import ChatRoomPreview from "../components/molecules/ChatRoomPreview";
 import { auth, db } from "../utils/firebase";
+import { FontAwesome5 } from "@expo/vector-icons";
+import colors from "../styles/colors";
+import headers from "../styles/headers";
 
 const ChatRoomsScreen = () => {
   const [userChatRooms, setUserChatRooms] = useState([]);
@@ -12,12 +15,12 @@ const ChatRoomsScreen = () => {
     (async () => {
       const buyerChatRoomsQ = query(
         collection(db, "chatRooms"),
-        where("buyer", "==", auth.currentUser.uid)
+        where("buyer_id", "==", auth.currentUser.uid)
       );
       const buyerChatRoomsSnap = await getDocs(buyerChatRoomsQ);
       const sellerChatRoomsQ = query(
         collection(db, "chatRooms"),
-        where("seller", "==", auth.currentUser.uid)
+        where("seller_id", "==", auth.currentUser.uid)
       );
       const sellerChatRoomsSnap = await getDocs(sellerChatRoomsQ);
       let chatRooms = [];
@@ -38,22 +41,39 @@ const ChatRoomsScreen = () => {
   }, []);
 
   return (
-    <View style={styles.container}>
-      {userChatRooms.map(({ id, buyer, seller, prod_id }, i) => (
-        <ChatRoomPreview
-          key={id}
-          buyerId={buyer}
-          sellerId={seller}
-          productId={prod_id}
-          index={i}
-        />
-      ))}
-    </View>
+    <SafeAreaView style={styles.container}>
+      <View style={styles.search}>
+        <FontAwesome5 name="search" solid size={22} color={colors.darkGray} />
+        <Text style={[headers.p, styles.searchText]}>Search</Text>
+      </View>
+      <ScrollView style={styles.chatRoomsContainer}>
+        {userChatRooms.map(({ id, buyer_id, seller_id, prod_id }, i) => (
+          <ChatRoomPreview
+            key={id}
+            buyerId={buyer_id}
+            sellerId={seller_id}
+            productId={prod_id}
+            index={i}
+          />
+        ))}
+      </ScrollView>
+    </SafeAreaView>
   );
 };
 
 export default ChatRoomsScreen;
 
 const styles = StyleSheet.create({
-  container: { width: "100%" },
+  container: { flex: 1 },
+  search: {
+    flexDirection: "row",
+    margin: 10,
+    marginBottom: 0,
+    padding: 10,
+    paddingLeft: 20,
+    borderRadius: 25,
+    backgroundColor: colors.lightGray,
+  },
+  searchText: { marginLeft: 20, color: colors.darkGray },
+  chatRoomsContainer: { paddingTop: 10 },
 });
