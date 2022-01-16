@@ -23,8 +23,8 @@ const SplashScreen = ({ navigation }) => {
   }, [curUser]);
 
   return (
-    <View>
-      <Image source={require("../../assets/swoplogo.png")} />
+    <View style={{flex: 1, backgroundColor: 'white', justifyContent:'center', alignItems: 'center'}}>
+      <Image style={{height: 40, width: 100}} source={require("../../assets/swoplogo.png")} />
     </View>
   );
 };

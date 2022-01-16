@@ -15,7 +15,6 @@ function SwipeScreen({}) {
   const [n, setn] = useState(0);
   const user_id = auth.currentUser.uid;
 
-
   const onShowPopup = () => {
     popupRef.show()
   }
@@ -24,22 +23,22 @@ function SwipeScreen({}) {
     popupRef.close()
   }
 
-  // call when products.length is 0
+  // TODO: call when products.length is 0
   const getProducts = async () => {
     const data = await SwopApi.getSwipeProducts(user_id);
-    console.log(data)
+    // console.log(data)
     setProducts(data);
   }
 
   useEffect(() => getProducts(), [])
 
   const swiped = async (user_id, product_id, direction) => {
-    let curr_product = products.pop();
+    products.pop();
     setLastDirection(direction);
     if (direction == 'right') {
       const data = await SwopApi.getRightSwiped(user_id, product_id)
       if (data.length > 0) {
-        setn(data.length)
+        setn(data.length);
         onShowPopup();
       }
     }
@@ -85,7 +84,7 @@ function SwipeScreen({}) {
       )}
 
     <Match
-      matchDegree={n}
+      // matchDegree={n}
       ref={(target) => popupRef = target}
       onTouchOutside = {onClosePopup}
       />
