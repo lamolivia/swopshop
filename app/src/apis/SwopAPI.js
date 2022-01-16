@@ -34,11 +34,23 @@ class SwopApi {
     });
     return data.data
   }
+
   static async getUserProducts(user_id) {
     const data = await get("/get_products", {
       params: {user_id: user_id},
     });
     return data.data;
+  }
+
+  static async addUserProduct(user_id, product_id, product_name) {
+    const data = await get("/add_product", {
+      params: {
+        'user_id': user_id, 
+        'product_id': product_id, 
+        'product_name': product_name
+      }
+    });
+    return data;
   }
 }
 

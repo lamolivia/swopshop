@@ -4,12 +4,13 @@ import { Camera } from "expo-camera";
 import { useGlobalContext } from "../utils/context";
 import * as ImageManipulator from "expo-image-manipulator";
 import { getStorage, ref, uploadBytes } from "firebase/storage";
-import { storage } from "../utils/firebase";
 import uuid from 'react-native-uuid';
+import SwopApi from "../apis/SwopAPI";
 
 const CameraScreen = ({ navigation }) => {
   const [hasPermission, setHasPermission] = useState();
   const [selfie, setSelfie] = useState();
+  const { curUser } = useGlobalContext();
 
   const cameraRef = useRef(null);
 
@@ -21,28 +22,39 @@ const CameraScreen = ({ navigation }) => {
   }, []);
 
   const uploadImage = async(selfie) => {
+    const image_name = `${uuid.v4()}.png`
     const response = await fetch(selfie);
     const blob = await response.blob();
-    storageRef = ref(getStorage(), `products/${uuid.v4()}.png`);
+
+    storageRef = ref(getStorage(), `products/${image_name}`);
     uploadBytes(storageRef, blob).then((snapshot) => {
       console.log('Uploaded a blob or file!');
     });
+
+    return image_name;
   }
 
   useEffect(() => {
+    let image_name;
+    let uploaded = false;
     if (selfie) {
-      //   What to do after taking photo    
-      console.log(selfie);  
+      //   What to do after taking photo     
       uploadImage(selfie)
-        .then(() => {
+        .then( async (image_name) => {
+          image_name = image_name;
           console.log("Great Sucess.");
+          console.log(image_name);
+          uploaded = true;
         })
         .catch((error) => {
           console.log("Error")
+        })
+        .finally(async () => {
+          if (uploaded) {
+            const data = await SwopApi.addUserProduct(curUser, image_name, image_name);
+            console.log(data);
+          }
         });
-
-      // 'file' comes from the Blob or File API
-      
     }
   }, [selfie]);
 
