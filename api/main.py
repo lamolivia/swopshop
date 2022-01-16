@@ -4,6 +4,8 @@ from fastapi.middleware.cors import CORSMiddleware
 import firebase_admin
 from firebase_admin import credentials, firestore
 import os
+from datetime import datetime
+from typing import List
 
 from Graph import Graph
 
@@ -51,8 +53,46 @@ async def get_user(user_id: str):
         print("No such document!")
         return "Error"
 
-@app.post("/swipe_right")
-async def get_user(user_id: str, product_id: str):
+def get_user_from_product(product_id: str) -> str:
+
+    product = db.collection('product').document(product_id)
+    product = product.get()
+
+    if not product.exists:
+        return ''
+
+    product = product.to_dict()
+    return product.get('user_id', '')
+
+def create_chat_rooms(cycle: List[str]) -> None:
+    chat_ids = []
+    match_entry = db.collection('matches').document()
+
+    left = len(cycle) - 1
+    right = 0
+
+    while right < len(cycle):
+        curr_chat = db.collection('chatRooms').document()
+        chat_ids.append(curr_chat.id)
+        print(f"buyer is {cycle[left]} and seller is {cycle[right]}")
+        curr_chat.set({
+            "buyer_id": get_user_from_product(cycle[left]),
+            "seller_id": get_user_from_product(cycle[right]),
+            "prod_id": cycle[right],
+            "match_id": match_entry.id,
+            "last_message_time": ""
+        })
+        right += 1
+        left = (left + 1) % len(cycle)
+
+    match_entry.set({
+        "match_time": datetime.now(),
+        "expired": False,
+        "chat_ids": chat_ids
+    })
+
+@app.get("/swipe_right")
+async def swipe_right(user_id: str, product_id: str) -> List[str]:
     user = db.collection('users').document(user_id)
     user_data = user.get()
 
@@ -71,28 +111,42 @@ async def get_user(user_id: str, product_id: str):
     g = Graph(db)
     res = g.contains_cycle(product_id=product_id)
     print(res)
+
+    #create chat room
+    if len(res) > 1:
+        # create entries in chatrooms
+        create_chat_rooms(cycle=res)
+
     g.destory_cycle(res)
     return res
 
+
 @app.get("/test_dfs")
-async def test_dfs(product_id: str):
+async def test_dfs(user_id: str, product_id: str):
 
     g = Graph(db)
-    return g.contains_cycle(product_id=product_id)
+    res = g.contains_cycle(user_id=user_id, product_id=product_id)
+    print(res)
+
+    if len(res) > 1:
+        # create entries in chatrooms
+        create_chat_rooms(cycle=res)
+
+    return res
 
 @app.get("/get_products")
-async def products(user_id: str):
+async def products(user_id: str) -> List[dict]:
     return [
         {"product_id": "asdlkfjakfa", "title": "Hello1", "price": "100", "image": "https://images.macrumors.com/t/ChPbcdmq7U5j6laUuR61rOjbh6g=/1600x0/article-new/2020/11/macbook-air-m1-unboxing.jpg"},
     {"product_id": "asdfadsffaj", "title": "Hello3", "price": "100", "image": "https://thermaltake.azureedge.net/pub/media/catalog/product/cache/6bf0ed99c663954fafc930039201ed07/x/f/xfit_black-white01.jpg"},
     {"product_id": "sdheihewhij", "title": "Hello5", "price": "100", "image": "https://thermaltake.azureedge.net/pub/media/catalog/product/cache/6bf0ed99c663954fafc930039201ed07/x/f/xfit_black-white01.jpg"}]
 
-@app.post("/add_product")
+@app.get("/add_product")
 async def add_product(user_id: str, image: str, product_name: str):
     return 0
 
 @app.get("/get_swipe_products")
-async def swipe_products(user_id: str):
+async def swipe_products(user_id: str) -> List[dict]:
     return [
     {"product_id": "GrAPM98SXEezkb6yRpBK", "title": "Hello3", "price": "100", "image": "https://thermaltake.azureedge.net/pub/media/catalog/product/cache/6bf0ed99c663954fafc930039201ed07/x/f/xfit_black-white01.jpg"},
     {"product_id": "yUgG91kRoQ62KOHOio2h", "title": "Hello5", "price": "100", "image": "https://thermaltake.azureedge.net/pub/media/catalog/product/cache/6bf0ed99c663954fafc930039201ed07/x/f/xfit_black-white01.jpg"},
