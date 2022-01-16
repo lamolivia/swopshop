@@ -127,8 +127,8 @@ export default LoginScreen;
 const styles = StyleSheet.create({
   container: { flex: 1, marginHorizontal: 10 },
   logo: {
-    width: 150,
-    height: 75,
+    width: 300,
+    height: 120,
     marginVertical: 20,
     alignSelf: "center",
   },
