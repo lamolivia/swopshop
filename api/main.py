@@ -186,7 +186,7 @@ async def add_product(user_id: str, image: str, product_name: str, price: str):
 @app.get("/get_swipe_products")
 async def swipe_products(user_id: str) -> List[dict]:
     product_ref = db.collection('products')
-    user_products = product_ref.where('user_id', '!=', user_id).limit(10).stream()
+    user_products = product_ref.where('user_id', '!=', user_id).limit(10)
     user_products = user_products.get()
 
     res = []

@@ -15,7 +15,8 @@ function SwipeScreen({}) {
 
   // call when products.length is 0
   const getProducts = async () => {
-    const data = await SwopApi.getSwipeProducts(1);
+    const data = await SwopApi.getSwipeProducts(user_id);
+    console.log(data)
     setProducts(data);
   }
 
@@ -49,7 +50,7 @@ function SwipeScreen({}) {
 
         <View style={{ flex: 1, flexDirection: "row" }}></View>
 
-        {products.map((product) => (
+        {products.length > 0 && products.map((product) => (
           <TinderCard
             key={product.product_id}
             onSwipe={(dir) => swiped(user_id, product.product_id, dir)}
@@ -59,9 +60,9 @@ function SwipeScreen({}) {
               <Image
                 style={styles.image}
                 source={{ uri: product.image }}
-                name={product.title}
+                name={product.name}
               ></Image>
-              <Text style={styles.cardTitle}>{product.title.toUpperCase()}</Text>
+              <Text style={styles.cardTitle}>{product.name.toUpperCase()}</Text>
             </View>
           </TinderCard>
         ))}
