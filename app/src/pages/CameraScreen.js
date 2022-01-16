@@ -3,17 +3,19 @@ import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import { Camera } from "expo-camera";
 import { useGlobalContext } from "../utils/context";
 import * as ImageManipulator from "expo-image-manipulator";
-import { getStorage, ref, uploadBytes } from "firebase/storage";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import uuid from 'react-native-uuid';
 import SwopApi from "../apis/SwopAPI";
-import { auth } from "../utils/firebase";
+import { auth, storage } from "../utils/firebase";
 
-const CameraScreen = ({ navigation }) => {
+const CameraScreen = ({ navigation, route }) => {
   const [hasPermission, setHasPermission] = useState();
   const [selfie, setSelfie] = useState();
   const user_id = auth.currentUser.uid;
-  
+  const {setCurUser, curUser} = useGlobalContext();
   const cameraRef = useRef(null);
+
+  const { get_all_products } = route.params;
 
   useEffect(() => {
     (async () => {
@@ -36,19 +38,29 @@ const CameraScreen = ({ navigation }) => {
   }
 
   useEffect(() => {
+    let image_name;
     if (selfie) {
       //   What to do after taking photo     
       uploadImage(selfie)
-        .then((image_name) => {
+        .then((new_image) => {
           console.log("Great Sucess.");
-
-          return SwopApi.addUserProduct(user_id, image_name, image_name, "12345.00");
+          image_name = `products/${new_image}`;
+          return new Promise(r => setTimeout(r, 2000));
+        })
+        .then(() => {
+          return getDownloadURL(ref(storage, image_name));
+        })
+        .then((image_link) => {
+          console.log(image_link);
+          console.log(image_name);
+          return SwopApi.addUserProduct(user_id, image_link, image_name, "12345.00");
         })
         .then((data) => {
-          console.log("uploaded to database");
+          console.log("third then");
+          get_all_products();
         })
         .catch((error) => {
-          console.log("Error")
+          console.log(error);
         });
     }
   }, [selfie]);

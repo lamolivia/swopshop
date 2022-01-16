@@ -20,12 +20,18 @@ const ProfileScreen = ({ navigation }) => {
   const stars = [];
   const [products, setProducts] = useState([]);
   const user_id = auth.currentUser.uid;
-  
   const { curUser } = useGlobalContext();
-  useEffect(async () => {
+
+  const get_all_products = async () => {
+    console.log("get all products");
     const response = await SwopApi.getUserProducts(user_id);
     setProducts(response);
+  }
+  
+  useEffect(() => {
+    get_all_products();
   }, []);
+
   console.log(curUser);
   for (let i = 0; i < 5; i++) {
     let colour = i < curUser.rating ? "black" : "grey";
@@ -38,7 +44,7 @@ const ProfileScreen = ({ navigation }) => {
         <View style={styles.header_icons}>
           <TouchableOpacity
             style={styles.settings_icon}
-            onPress={() => navigation.navigate("Camera")}
+            onPress={() => navigation.navigate("Camera", {get_all_products})}
           >
             <Ionicons name="add-circle-sharp" size={30} color="black" />
           </TouchableOpacity>
@@ -81,7 +87,7 @@ const displayImages = (navigation, products) => {
     <TouchableOpacity
       key={product_id}
       onPress={() => {
-        navigation.navigate("ImageDisplay", { user: user.name, image: image, title: "hello", price: "100"});
+        navigation.navigate("ImageDisplay", { user: user.name, image: image, title: "hello", price: "100" });
       }}
     >
       <View style={styles.image_view}>
