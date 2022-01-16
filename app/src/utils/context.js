@@ -7,6 +7,8 @@ const AppContext = React.createContext();
 
 const AppProvider = ({ children }) => {
   const [curUser, setCurUser] = useState();
+  const [productImage, setProductImage] = useState();
+  const [getAllProds, setGetAllProds] = useState();
 
   // Keep track of current user
   useEffect(() => {
@@ -29,7 +31,16 @@ const AppProvider = ({ children }) => {
   }, []);
 
   return (
-    <AppContext.Provider value={{ curUser, setCurUser }}>
+    <AppContext.Provider
+      value={{
+        curUser,
+        setCurUser,
+        productImage,
+        setProductImage,
+        getAllProds,
+        setGetAllProds,
+      }}
+    >
       {children}
     </AppContext.Provider>
   );

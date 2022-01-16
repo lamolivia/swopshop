@@ -29,7 +29,7 @@ const ChatRoomPreview = ({ id, buyerId, sellerId, productId, index }) => {
   return (
     <TouchableOpacity
       onPress={() => {
-        navigation.navigate("ChatRoom", { chatRoomId: id });
+        navigation.navigate("ChatRoom", { chatRoomId: id, product });
       }}
       style={[
         styles.container,

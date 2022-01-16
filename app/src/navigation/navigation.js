@@ -77,7 +77,7 @@ const Navigation = () => {
 const TabNavigator = () => {
   return (
     <Tab.Navigator
-      initialRouteName="Home"
+      initialRouteName="Profile"
       labeled={false}
       activeColor={colors.primary}
       inactiveColor={colors.darkGray}

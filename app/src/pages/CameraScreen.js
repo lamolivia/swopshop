@@ -4,18 +4,16 @@ import { Camera } from "expo-camera";
 import { useGlobalContext } from "../utils/context";
 import * as ImageManipulator from "expo-image-manipulator";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import uuid from 'react-native-uuid';
+import uuid from "react-native-uuid";
 import SwopApi from "../apis/SwopAPI";
-import { auth, storage } from "../utils/firebase";
+import { storage } from "../utils/firebase";
 
 const CameraScreen = ({ navigation, route }) => {
   const [hasPermission, setHasPermission] = useState();
   const [selfie, setSelfie] = useState();
-  const user_id = auth.currentUser.uid;
-  const {setCurUser, curUser} = useGlobalContext();
   const cameraRef = useRef(null);
 
-  const { setImage } = route.params;
+  const { setProductImage } = useGlobalContext();
 
   useEffect(() => {
     (async () => {
@@ -24,38 +22,32 @@ const CameraScreen = ({ navigation, route }) => {
     })();
   }, []);
 
-  const uploadImage = async(selfie) => {
-    const image_name = `${uuid.v4()}.png`
+  const uploadImage = async (selfie) => {
+    const image_name = `${uuid.v4()}.png`;
     const response = await fetch(selfie);
     const blob = await response.blob();
 
     storageRef = ref(getStorage(), `products/${image_name}`);
     uploadBytes(storageRef, blob).then((snapshot) => {
-      console.log('Uploaded a blob or file!');
+      console.log("Uploaded a blob or file!");
     });
 
     return image_name;
-  }
+  };
 
   useEffect(() => {
     let image_name;
     if (selfie) {
-      //   What to do after taking photo     
+      //   What to do after taking photo
       uploadImage(selfie)
         .then((new_image) => {
           console.log("Great Sucess.");
           image_name = `products/${new_image}`;
-          return new Promise(r => setTimeout(r, 2000));
+          return new Promise((r) => setTimeout(r, 2000));
         })
-        .then(() => {
-          return getDownloadURL(ref(storage, image_name));
-        })
-        .then((image_link) => {
-          return setImage(image_link);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+        .then(() => getDownloadURL(ref(storage, image_name)))
+        .then((image_link) => setImage(image_link))
+        .catch((error) => console.error(error));
     }
   }, [selfie]);
 
@@ -66,8 +58,7 @@ const CameraScreen = ({ navigation, route }) => {
         .then((photo) =>
           // Might not need
           // Flip photo horizontally so displayed photo in same orientation as preview
-          ImageManipulator.manipulateAsync(photo.uri, [
-          ], {compress: 0.1})
+          ImageManipulator.manipulateAsync(photo.uri, [], { compress: 0.1 })
         )
         .then((flipPhoto) => {
           setSelfie(flipPhoto.uri);

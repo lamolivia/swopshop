@@ -9,6 +9,7 @@ import {
 } from "firebase/firestore";
 import React, { useEffect, useState, useRef } from "react";
 import {
+  Dimensions,
   Keyboard,
   KeyboardAvoidingView,
   SafeAreaView,
@@ -26,7 +27,7 @@ import { FontAwesome5 } from "@expo/vector-icons";
 import headers from "../styles/headers";
 
 const ChatRoomScreen = ({ route }) => {
-  const { chatRoomId } = route.params;
+  const { chatRoomId, product } = route.params;
   const scrollViewRef = useRef();
 
   const [messages, setMessages] = useState([]);
@@ -45,7 +46,6 @@ const ChatRoomScreen = ({ route }) => {
   }, [route]);
 
   const sendMessage = () => {
-    Keyboard.dismiss();
     addDoc(
       collection(doc(collection(db, "chatRooms"), chatRoomId), "messages"),
       {
@@ -62,22 +62,32 @@ const ChatRoomScreen = ({ route }) => {
     <SafeAreaView style={styles.container}>
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "height"}
-        style={
-          { justifyContent: "space-between", flexGrow: 1 }
-        }
+        style={{ justifyContent: "space-between", flexGrow: 1 }}
       >
         <TouchableWithoutFeedback
           onPress={Keyboard.dismiss}
           style={(styles.flexMax, { backgroundColor: "white", flexGrow: 1 })}
         >
           <View>
-            <Text style={headers.h2}>MacBook Air</Text>
+            <Text style={headers.h2}>{product.name}</Text>
           </View>
           <ScrollView
             ref={scrollViewRef}
-            onContentSizeChange={() => scrollViewRef.current.scrollToEnd({ animated: true })}
-            style={{zIndex: 0, height: '80%', backgroundColor: "white", flexGrow: 1, top: 5}}
+            onContentSizeChange={() =>
+              scrollViewRef.current.scrollToEnd({ animated: true })
+            }
+            contentContainerStyle={{ flexGrow: 1 }}
+            showsVerticalScrollIndicator={false}
+            // automaticallyAdjustContentInsets={false}
+            style={{
+              // zIndex: 0,
+              height: Dimensions.get("window").height - 125,
+              //   flex: 1,
+              //   backgroundColor: "white",
+              flexGrow: 0,
+            }}
           >
+            {/* <View style={{ flexGrow: 1 }}> */}
             {messages.map(({ id, data }) =>
               data.email === auth.currentUser.email ? (
                 <View key={id} style={styles.sender}>
@@ -93,14 +103,20 @@ const ChatRoomScreen = ({ route }) => {
                 </View>
               )
             )}
+            {/* </View> */}
           </ScrollView>
         </TouchableWithoutFeedback>
         <View style={styles.footer}>
           <TextInput
+            blurOnSubmit={false}
             placeholder="Aa"
+            placeholderTextColor={colors.darkGray}
             style={[headers.p, styles.textInput]}
             value={input}
             onChangeText={(text) => setInput(text)}
+            onFocus={() => {
+              scrollViewRef.current.scrollToEnd({ animated: true });
+            }}
             onSubmitEditing={sendMessage}
           />
           <TouchableOpacity activeOpacity={0.5} onPress={sendMessage}>
@@ -124,7 +140,7 @@ const styles = StyleSheet.create({
   flexMax: { height: "100%" },
   sender: {
     padding: 10,
-    backgroundColor: "#ECECEC",
+    backgroundColor: colors.primary,
     alignSelf: "flex-end",
     borderRadius: 20,
     marginBottom: 10,
@@ -132,20 +148,20 @@ const styles = StyleSheet.create({
   },
   reciever: {
     padding: 10,
-    backgroundColor: "#2C6BED",
+    backgroundColor: colors.darkGray,
     alignSelf: "flex-start",
     borderRadius: 20,
     marginBottom: 10,
     maxWidth: "80%",
   },
   senderText: {
-    color: "black",
+    color: "white",
   },
   recieverText: {
     color: "white",
   },
   footer: {
-    marginBottom: 10,
+    marginVertical: 10,
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
@@ -153,7 +169,7 @@ const styles = StyleSheet.create({
     borderRadius: 25,
     paddingVertical: 10,
     paddingHorizontal: 20,
-    zIndex: 3
+    zIndex: 3,
   },
   textInput: { flex: 1 },
 });

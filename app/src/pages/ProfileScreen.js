@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   StyleSheet,
   Image,
-  Dimensions
+  Dimensions,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import SwopApi from "../apis/SwopAPI";
@@ -26,14 +26,12 @@ const ProfileScreen = ({ navigation }) => {
     console.log("get all products");
     const response = await SwopApi.getUserProducts(user_id);
     setProducts(response);
-  }
-  
+  };
+
   useEffect(() => {
     get_all_products();
   }, []);
 
-  console.log(curUser);
-  console.log(products);
   for (let i = 0; i < 5; i++) {
     let colour = i < curUser.rating ? "black" : "grey";
     stars.push(<Ionicons key={i} name="star" size={14} color={colour} />);
@@ -45,7 +43,9 @@ const ProfileScreen = ({ navigation }) => {
         <View style={styles.header_icons}>
           <TouchableOpacity
             style={styles.settings_icon}
-            onPress={() => navigation.navigate("AddProductScreen", {get_all_products})}
+            onPress={() =>
+              navigation.navigate("AddProductScreen", { get_all_products })
+            }
           >
             <Ionicons name="add-circle-sharp" size={30} color="black" />
           </TouchableOpacity>
@@ -76,23 +76,29 @@ const ProfileScreen = ({ navigation }) => {
       </View>
 
       <ScrollView>
-        <View style={styles.view2}>{displayImages(navigation, products, curUser)}</View>
+        <View style={styles.view2}>
+          {displayImages(navigation, products, curUser)}
+        </View>
       </ScrollView>
-      
     </SafeAreaView>
   );
 };
 
 const displayImages = (navigation, products, curUser) => {
-  return products.map(({image, price, name}, index) => (
+  return products.map(({ image, price, name }, index) => (
     <TouchableOpacity
       key={index}
       onPress={() => {
-        navigation.navigate("ImageDisplay", { user: curUser.username, image: image, title: name, price: price });
+        navigation.navigate("ImageDisplay", {
+          user: curUser.username,
+          image: image,
+          title: name,
+          price: price,
+        });
       }}
     >
       <View style={styles.image_view}>
-        <Image style={styles.image} source={{uri:image}} />
+        <Image style={styles.image} source={{ uri: image }} />
       </View>
     </TouchableOpacity>
   ));
@@ -109,7 +115,7 @@ const styles = StyleSheet.create({
     width: width / 3,
     height: width / 3,
     marginBottom: 2,
-    paddingHorizontal: 1
+    paddingHorizontal: 1,
   },
   image: {
     flex: 1,
