@@ -61,7 +61,7 @@ function SwipePage({}){
   }
 
 	return (
-		<SafeAreaView style={{backgroundColor: '#155A81'}}>
+		<SafeAreaView style={{backgroundColor: 'white'}}>
 			<SwipePageHeader></SwipePageHeader>
 
       <View style={styles.cardContainer}>

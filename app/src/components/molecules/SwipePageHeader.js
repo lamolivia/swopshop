@@ -27,14 +27,18 @@ const styles = StyleSheet.create({
       backgroundColor: 'white',
       flexDirection: 'row', 
       alignItems: 'center',
-      marginBottom: 10
+      marginBottom: 10,
+      borderWidth: 4,
+      borderColor: '#155A81',
+      width: '110%',
+      left: -4
     
     },
 
     logo: {
         height: 40,
         width: 80,
-        marginLeft: 75
+        marginLeft: 80
     },
 
     user: {
