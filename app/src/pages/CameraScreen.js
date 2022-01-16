@@ -3,6 +3,9 @@ import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import { Camera } from "expo-camera";
 import { useGlobalContext } from "../utils/context";
 import * as ImageManipulator from "expo-image-manipulator";
+import { getStorage, ref, uploadBytes } from "firebase/storage";
+import { storage } from "../utils/firebase";
+import uuid from 'react-native-uuid';
 
 const CameraScreen = ({ navigation }) => {
   const [hasPermission, setHasPermission] = useState();
@@ -17,11 +20,29 @@ const CameraScreen = ({ navigation }) => {
     })();
   }, []);
 
+  const uploadImage = async(selfie) => {
+    const response = await fetch(selfie);
+    const blob = await response.blob();
+    storageRef = ref(getStorage(), `products/${uuid.v4()}.png`);
+    uploadBytes(storageRef, blob).then((snapshot) => {
+      console.log('Uploaded a blob or file!');
+    });
+  }
+
   useEffect(() => {
     if (selfie) {
-      //   What to do after taking photo
-      console.log(selfie);
-      console.log("Image Taken");
+      //   What to do after taking photo    
+      console.log(selfie);  
+      uploadImage(selfie)
+        .then(() => {
+          console.log("Great Sucess.");
+        })
+        .catch((error) => {
+          console.log("Error")
+        });
+
+      // 'file' comes from the Blob or File API
+      
     }
   }, [selfie]);
 
@@ -34,7 +55,7 @@ const CameraScreen = ({ navigation }) => {
           // Flip photo horizontally so displayed photo in same orientation as preview
           ImageManipulator.manipulateAsync(photo.uri, [
             { flip: ImageManipulator.FlipType.Horizontal },
-          ])
+          ], {compress: 0.1})
         )
         .then((flipPhoto) => {
           setSelfie(flipPhoto.uri);
