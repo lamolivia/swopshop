@@ -56,6 +56,7 @@ const AddProductScreen = ( { route, navigation } ) => {
                     uploadProductInfo()
                     .then(() => {
                         get_all_products();
+                        navigation.pop();
                     })
                     .catch((error) => {
                         console.log(error);

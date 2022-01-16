@@ -84,7 +84,7 @@ function SwipeScreen({}) {
       )}
 
     <Match
-      // matchDegree={n}
+      matchDegree={n}
       ref={(target) => popupRef = target}
       onTouchOutside = {onClosePopup}
       />

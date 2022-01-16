@@ -67,11 +67,11 @@ const CameraScreen = ({ navigation, route }) => {
           // Might not need
           // Flip photo horizontally so displayed photo in same orientation as preview
           ImageManipulator.manipulateAsync(photo.uri, [
-            { flip: ImageManipulator.FlipType.Horizontal },
           ], {compress: 0.1})
         )
         .then((flipPhoto) => {
           setSelfie(flipPhoto.uri);
+          navigation.pop();
         })
         .catch((err) => console.error(err));
     }
