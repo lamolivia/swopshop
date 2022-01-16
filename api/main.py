@@ -111,7 +111,7 @@ async def swipe_right(user_id: str, product_id: str) -> List[str]:
     user.update({"want": want_list})
 
     g = Graph(db)
-    res = g.contains_cycle(product_id=product_id)
+    res = g.contains_cycle(user_id=user_id, product_id=product_id)
     print(res)
 
     #create chat room
