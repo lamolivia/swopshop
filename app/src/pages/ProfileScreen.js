@@ -15,34 +15,18 @@ import { useGlobalContext } from "../utils/context";
 
 const { width, height } = Dimensions.get("window");
 
-const user = {
-  name: "mason_wong",
-  products: [
-    { image: require("../../assets/macbook.jpg"), id: 1, name: "MacBook"},
-    { image: require("../../assets/macbook.jpg"), id: 2, name: "MacBook"},
-    { image: require("../../assets/macbook.jpg"), id: 3, name: "MacBook"},
-    { image: require("../../assets/macbook.jpg"), id: 4, name: "MacBook"},
-    { image: require("../../assets/macbook.jpg"), id: 5, name: "MacBook"},
-    { image: require("../../assets/macbook.jpg"), id: 6, name: "MacBook"},
-    { image: require("../../assets/macbook.jpg"), id: 7, name: "MacBook"},
-    { image: require("../../assets/macbook.jpg"), id: 8, name: "MacBook"},
-  ],
-  rating: 4,
-  location: "Vancouver, Canada",
-};
-
 const ProfileScreen = ({ navigation }) => {
   const stars = [];
   const [products, setProducts] = useState([]);
   
-  const { curUser } = useGlobalContext();
+  const { curUser} = useGlobalContext();
   useEffect(async () => {
     const response = await SwopApi.getUserProducts(curUser);
     setProducts(response);
   }, []);
 
   for (let i = 0; i < 5; i++) {
-    let colour = i < user.rating ? "black" : "grey";
+    let colour = i < curUser.rating ? "black" : "grey";
     stars.push(<Ionicons key={i} name="star" size={14} color={colour} />);
   }
 
@@ -64,7 +48,7 @@ const ProfileScreen = ({ navigation }) => {
           </TouchableOpacity>
         </View>
 
-        <Text style={styles.text}>@{user.name}</Text>
+        <Text style={styles.text}>@{curUser.username}</Text>
 
         <View style={styles.star_view}>{stars}</View>
 
@@ -72,7 +56,7 @@ const ProfileScreen = ({ navigation }) => {
           <View style={{ flexDirection: "row" }}>
             <Ionicons name="location" size={14} color="black" />
             <Text style={({ fontSize: 17 }, { fontWeight: "bold" })}>
-              {user.location}
+              {curUser.location}
             </Text>
           </View>
 
