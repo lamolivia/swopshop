@@ -84,11 +84,11 @@ const ProfileScreen = ({ navigation }) => {
 };
 
 const displayImages = (navigation, products, curUser) => {
-  return products.map(({image}, index) => (
+  return products.map(({image, price, name}, index) => (
     <TouchableOpacity
       key={index}
       onPress={() => {
-        navigation.navigate("ImageDisplay", { user: curUser.username, image: image, title: "hello", price: "100" });
+        navigation.navigate("ImageDisplay", { user: curUser.username, image: image, title: name, price: price });
       }}
     >
       <View style={styles.image_view}>
