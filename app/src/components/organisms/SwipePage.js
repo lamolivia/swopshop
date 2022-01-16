@@ -91,6 +91,8 @@ function SwipePage({}){
 
     </View>
 
+    {lastDirection ? <Text style={styles.notif}>You swiped {lastDirection} !</Text> : <Text style={styles.notif}/>}
+
     {/* <Footer></Footer> */}
       
 		</SafeAreaView>
@@ -131,6 +133,14 @@ const styles = StyleSheet.create({
     width: 300,
     borderRadius: 20,
     overflow: 'hidden'
+  },
+
+  notif: {
+    bottom: -475,
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginLeft: '35%',
+    fontWeight: 'bold'
   }
 
 });
