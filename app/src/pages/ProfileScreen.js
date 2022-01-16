@@ -35,7 +35,7 @@ const ProfileScreen = ({ navigation }) => {
   const [products, setProducts] = useState([]);
   
   useEffect(async () => {
-    const response = await SwopApi.getUserProducts(0);
+    const response = await SwopApi.getUserProducts(1);
     setProducts(response);
   }, []);
 
@@ -75,7 +75,7 @@ const ProfileScreen = ({ navigation }) => {
           </View>
 
           <Text style={({ fontSize: 17 }, { fontWeight: "bold" })}>
-            {user.products.length} items
+            {products.length} items
           </Text>
         </View>
       </View>
@@ -89,9 +89,9 @@ const ProfileScreen = ({ navigation }) => {
 };
 
 const displayImages = (navigation, products) => {
-  return products.map((image) => (
+  return products.map(({image, product_id}) => (
     <TouchableOpacity
-      key={image}
+      key={product_id}
       onPress={() => {
         navigation.navigate("ImageDisplay", { user: user.name, image: image, title: "hello", price: "100"});
       }}
@@ -114,7 +114,7 @@ const styles = StyleSheet.create({
     width: width / 3,
     height: width / 3,
     marginBottom: 2,
-    paddingHorizontal: 1,
+    paddingHorizontal: 1
   },
   image: {
     flex: 1,
