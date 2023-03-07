@@ -8,6 +8,7 @@ import {
   Keyboard,
   TouchableWithoutFeedback,
   View,
+  ActionSheetIOS,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import colors from "../styles/colors";
@@ -15,7 +16,7 @@ import headers from "../styles/headers";
 import SwopButton from "../components/atoms/SwopButton";
 import { auth } from "../utils/firebase";
 import SwopApi from "../apis/SwopAPI";
-import { useGlobalContext } from "../utils/context";
+import * as ImagePicker from "expo-image-picker";
 
 const AddProductScreen = ({ route, navigation }) => {
   const [productName, setName] = useState("");
@@ -33,14 +34,38 @@ const AddProductScreen = ({ route, navigation }) => {
     );
   };
 
+  const addImgHandler = () =>
+    ActionSheetIOS.showActionSheetWithOptions(
+      {
+        options: ["Cancel", "Take photo", "Choose from library"],
+        cancelButtonIndex: 0,
+      },
+      (buttonIndex) => {
+        if (buttonIndex === 1) navigation.navigate("Camera", { setImage });
+        else if (buttonIndex === 2) {
+          (async () => {
+            let result = await ImagePicker.launchImageLibraryAsync({
+              mediaTypes: ImagePicker.MediaTypeOptions.All,
+              allowsEditing: true,
+              aspect: [4, 3],
+              quality: 1,
+            });
+
+            console.log(result);
+
+            if (!result.cancelled) {
+              setImage(result.uri);
+            }
+          })();
+        }
+      }
+    );
+
   return (
     <SafeAreaView style={styles.container}>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
         <View style={{ flex: 1 }}>
-          <TouchableOpacity
-            style={styles.camera}
-            onPress={() => navigation.navigate("Camera", { setImage })}
-          >
+          <TouchableOpacity style={styles.camera} onPress={addImgHandler}>
             {productImage ? (
               <Image style={styles.image} source={{ uri: productImage }} />
             ) : (
